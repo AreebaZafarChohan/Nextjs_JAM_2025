@@ -65,25 +65,23 @@ The request body should include details about the recipient and shipment, such a
       "state": "CA",
       "zip": "94107",
       "country": "US",
-    };
-
-    const addressTo = {
+    },
+    {
       "name": "John Doe",
       "street1": "456 User Street",
       "city": "New York",
       "state": "NY",
       "zip": "10001",
       "country": "US",
-    };
-
-    const parcels = cart.map(() => ({
+    },
+   {
       "length": "10",
       "width": "10",
       "height": "10",
       "distance_unit": "in",
       "weight": "5",
       "mass_unit": "lb",
-    }))
+    }
   }  
 
 ```
