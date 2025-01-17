@@ -2,13 +2,13 @@
 import { Rule } from '@sanity/types';
 
 export default {
-  name: 'salesRecord',
-  title: 'Sales Record',
+  name: 'order',
+  title: 'Order',
   type: 'document',
   fields: [
     {
-      name: 'salesRecordId',
-      title: 'Sales Record ID',
+      name: 'orderId',
+      title: 'Order ID',
       type: 'string',
       validation: (Rule: Rule) => Rule.required(),
     },
@@ -35,8 +35,8 @@ export default {
           type: 'object',
           fields: [
             {
-              name: 'saleDate',
-              title: 'Sale Date',
+              name: 'OrderDate',
+              title: 'Order Date',
               type: 'datetime',
               validation: (Rule: Rule) => Rule.required(),
             },
