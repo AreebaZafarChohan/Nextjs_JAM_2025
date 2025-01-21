@@ -1,5 +1,4 @@
 import Image from "next/image";
-import React from "react";
 import { CardProps } from "../../../types/components";
 
 interface ExtendedCardProps extends CardProps {
@@ -20,13 +19,14 @@ const ItemCard: React.FC<ExtendedCardProps> = ({
 }) => {
   const priceValue = price ? Number(price) : 0; // Ensure price is a number or default to 0
 
+
   return (
     <div className="flex gap-4 bg-white rounded-lg p-4 shadow-md my-2">
-      <Image
-        src={image || '/default-image.jpg'}
+      <img
+        src={image}
         alt={`${name} Image`}
-        width={100}
-        height={100}
+        width={200}
+        height={200}
         className="w-[100px] h-[100px] object-cover rounded-lg"
       />
       <div className="flex-1">
@@ -39,7 +39,7 @@ const ItemCard: React.FC<ExtendedCardProps> = ({
           >
             -
           </button>
-          <span className="px-4 py-1 bg-gray-100 text-gray-700 rounded-md">
+          <span className="px-4 py-1 text-gray-100 bg-darkPrimary rounded-md">
             {quantity}
           </span>
           <button
@@ -58,7 +58,7 @@ const ItemCard: React.FC<ExtendedCardProps> = ({
       </div>
       <div className="pr-[19rem]">
         <p className="font-clash text-darkPrimary text-lg">
-          £{priceValue * quantity}
+          £{(priceValue * quantity).toFixed(2)}
         </p>
       </div>
     </div>

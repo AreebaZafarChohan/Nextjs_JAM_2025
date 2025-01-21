@@ -3,23 +3,76 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { CardProps } from "../../../types/components";
+import { client } from "@/sanity/lib/client";
 
-const ProductCard: React.FC<{ productData: CardProps }> = ({ productData}) => {
+const ProductCard: React.FC<{ productData: CardProps }> = ({ productData }) => {
   const [popupMessage, setPopupMessage] = useState<string | null>(null);
+  const [cartItems, setCartItems] = useState();
 
   if (!productData) {
     return null; // Safeguard in case productData is undefined
   }
 
-  const handleAddToCart = () => {
-    const cartItems = JSON.parse(localStorage.getItem("cart") || "[]");
+  // Function to update stock in Sanity
+  const updateStock = async (productId: string, decrementBy: number) => {
+    try {
+      const updatedProduct = await client
+        .patch(productId) // Specify the product to update
+        .dec({ stock: decrementBy }) // Decrement stock by the specified quantity
+        .commit(); // Commit the changes
+
+      console.log('Stock updated:', updatedProduct);
+      return updatedProduct;
+    } catch (error) {
+      console.error('Error updating stock:', error);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    const productId = productData.id ?? "default-id"; // Provide a fallback ID if undefined
+  
+    const stock = productData.stock ?? 0;
+  
+    if (stock <= 0) {
+      alert("Product is out of stock!");
+      return;
+    }
+  
     const newItem = {
-      id: productData.id,
+      id: productId,
       image: productData.imageUrl,
       name: productData.name,
       price: productData.price,
     };
-    localStorage.setItem("cart", JSON.stringify([...cartItems, newItem]));
+  
+    addItemToCart(newItem);
+  
+    // Update stock in Sanity
+    const updatedProduct = await updateStock(productId, 1);
+  
+    if (updatedProduct) {
+      productData.stock = updatedProduct.stock; // Update the local state (if applicable)
+    }
+  };
+
+  const addItemToCart = (newItem: any) => {
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    // Check if the product already exists in the cart
+    const existingItem = cart.find((item: any) => item.id === newItem.id);
+
+    if (existingItem) {
+      // If it exists, update the quantity
+      existingItem.quantity += 1;
+    } else {
+      // If not, add the new item
+      cart.push({ ...newItem, quantity: 1 });
+    }
+
+    // Update the cart in the state and localStorage
+    setCartItems(cart);
+    localStorage.setItem("cart", JSON.stringify(cart));
+
     setPopupMessage(`${productData.name} has been added to your cart! ✅✨`);
     setTimeout(() => setPopupMessage(null), 2000);
   };
@@ -54,10 +107,10 @@ const ProductCard: React.FC<{ productData: CardProps }> = ({ productData}) => {
         {/* Rating and Stock */}
         <div className="flex justify-between items-center mt-2">
           <h4 className="font-sans font-semibold text-sm bg-yellow-500 px-2 py-1 rounded">
-            {`Rating - ${productData.rating}` || "No Rating"}
+            {`Rating - ${productData.rating}`}
           </h4>
           <p className="font-sans font-bold text-xs text-green-500">
-            {`In Stock (${productData.stock || 0})`}
+            {`In Stock (${productData.stock || "Out of stock"})`}
           </p>
         </div>
 

@@ -10,7 +10,7 @@ import { client } from "@/sanity/lib/client";
 
 const ProductCardDetails = () => {
   const params = useParams(); // Getting the route parameter
-  const productId = params.id;
+  const productId = params?.id;
   const [details, setDetails] = useState<CardProps | null>(null);
   const [quantity, setQuantity] = useState<number>(1); // Default quantity set to 1
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Modal state
@@ -175,19 +175,37 @@ const ProductCardDetails = () => {
                   Width
                 </h6>
                 <h6 className="font-normal font-clash leading-[19.6px] text-darkPrimary lg:text-lg md:text-base">
-                  Depth
+                  Length
                 </h6>
               </div>
               <div className="flex justify-between mt-3">
                 <h6 className="font-normal font-clash leading-[19.6px] text-darkPrimary lg:text-lg md:text-base">
-                  110cm
+                  {`${details.dimensions?.height}cm`}
                 </h6>
                 <h6 className="font-normal font-clash leading-[19.6px] text-darkPrimary lg:text-lg md:text-base">
-                  75cm
+                {`${details.dimensions?.width}cm`}
                 </h6>
                 <h6 className="font-normal font-clash leading-[19.6px] text-darkPrimary lg:text-lg md:text-base">
-                  50cm
+                {`${details.dimensions?.length}cm`}
                 </h6>
+              </div>
+              <div className="border-t border-darkPrimary pt-2 my-2">
+              {
+  details.stock === 0 ? (
+    <p className="font-normal font-clash leading-[19.6px] text-red-500 lg:text-lg md:text-base">
+      Out of Stock
+    </p>
+  ) : (
+    <div className="flex gap-6">
+      <p className="font-normal font-clash leading-[19.6px] text-darkPrimary lg:text-lg md:text-base">
+        Available Stock
+      </p>
+      <p className="font-normal font-clash leading-[19.6px] text-green-500 lg:text-lg md:text-base">
+        ({details.stock})
+      </p>
+    </div>
+  )
+}
               </div>
             </div>
             <div className=" flex flex-col gap-[12px] ">

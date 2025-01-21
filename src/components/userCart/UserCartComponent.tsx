@@ -3,86 +3,74 @@ import { useEffect, useState } from "react";
 import ItemCard from "./ItemCard";
 import Link from "next/link";
 import CheckoutModal from "../OrderSystem/CheckoutModal";
+//import { useSession, signIn } from "next-auth/react";
+
 
 const UserCartComponent = () => {
+   // const { data: session } = useSession(); // Get session data
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    // Fetch items from localStorage
-    const items = JSON.parse(localStorage.getItem("cart") || "[]");
-
-    // Add logic to update quantity if the item already exists
-    const updatedItems = items.map((item: any) => ({
-      ...item,
-      quantity: 1, // Default quantity to 1 if not provided
-    }));
-
-    setCartItems(updatedItems);
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    setCartItems(cart);
   }, []);
 
-  const updateLocalStorage = (updatedCart: any[]) => {
+  const removeItemFromCart = (productId: number) => {
+    const updatedCart = cartItems.filter((item) => item.id !== productId);
+    setCartItems(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const handleQuantityChange = (id: string, delta: number) => {
+  const decreaseQuantity = (productId: number) => {
     const updatedCart = cartItems.map((item) => {
-      if (item.id === id) {
-        const newQuantity = item.quantity + delta;
-        return newQuantity > 0 ? { ...item, quantity: newQuantity } : item;
+      if (item.id === productId && item.quantity > 1) {
+        return { ...item, quantity: item.quantity - 1 };
       }
       return item;
-    }).filter((item) => item.quantity > 0); // Remove items with quantity 0
+    });
     setCartItems(updatedCart);
-    updateLocalStorage(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const handleAddItem = (newItem: any) => {
-    const itemIndex = cartItems.findIndex(
-      (item) => item.id === newItem.id || item.name === newItem.name
-    );
-  
-    if (itemIndex > -1) {
-      // If item exists, update quantity
-      const updatedCart = [...cartItems];
-      updatedCart[itemIndex].quantity += 1;
-      setCartItems(updatedCart);
-      updateLocalStorage(updatedCart);
-    } else {
-      // Otherwise, add a new item
-      const updatedCart = [...cartItems, { ...newItem, imageUrl: newItem.imageUrl }];
-      setCartItems(updatedCart);
-      updateLocalStorage(updatedCart);
-    }
-  };
-
-  const handleRemoveItem = (id: string) => {
-    const updatedCart = cartItems.filter((item) => item.id !== id);
+  const increaseQuantity = (productId: number) => {
+    const updatedCart = cartItems.map((item) => {
+      if (item.id === productId) {
+        return { ...item, quantity: item.quantity + 1 };
+      }
+      return item;
+    });
     setCartItems(updatedCart);
-    updateLocalStorage(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
   const calculateSubtotal = () =>
     cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  //Handle Modal 
   const handleOpenModal = () => {
-  if (cartItems.length === 0 || calculateSubtotal() === 0) {
-    alert("Please add items to your cart before proceeding to checkout.");
-    return;
-  }
-  setIsModalOpen(true);
-};
+   /* if (!session) {
+      // Redirect to the sign-in page
+      signIn();
+      return;
+    } */
+    if (cartItems.length === 0 || calculateSubtotal() === 0) {
+      alert("Please add items to your cart before proceeding to checkout.");
+      return;
+    }
+    setIsModalOpen(true);
+  };
+  
   const handleCloseModal = () => setIsModalOpen(false);
   const handleSubmitForm = (formData: any) => {
-    console.log(formData); // Handle form submission (e.g., send to backend or update UI)
+    console.log(formData);
+    localStorage.removeItem("cart");
+    setCartItems([]);
     handleCloseModal();
   };
 
   return (
     <div className="relative bg-lightGray h-full mx-auto w-full lg:px-0 py-4 px-6 user-cart">
       <CheckoutModal isOpen={isModalOpen} closeModal={handleCloseModal} onSubmit={handleSubmitForm} />
-
       <h3 className="mx-10 font-clash font-normal leading-[33.6px] text-darkPrimary my-2 text-2xl md:text-4xl">
         Your shopping cart
       </h3>
@@ -92,7 +80,7 @@ const UserCartComponent = () => {
           <p className="pl-[1rem] text-lg font-clash font-normal leading-[19.6px] text-darkPrimary">Product</p>
           <p className="pl-[23.5rem] font-clash font-normal text-lg leading-[19.6px] text-darkPrimary">Total</p>
         </div>
-        <hr className="bg-lightGray"/>
+        <hr className="bg-lightGray" />
       </div>
 
       <div className="mx-4 flex justify-between mt-8 gap-4">
@@ -102,13 +90,13 @@ const UserCartComponent = () => {
             cartItems.map((item) => (
               <ItemCard
                 key={item.id}
-                image={item.imageUrl || ""}
+                image={item.imageUrl}
                 name={item.name}
-                price={Number(item.price)}
+                price={item.price}
                 quantity={item.quantity}
-                onIncrease={() => handleQuantityChange(item.id, 1)}
-                onDecrease={() => handleQuantityChange(item.id, -1)}
-                onRemove={() => handleRemoveItem(item.id)}
+                onIncrease={() => increaseQuantity(item.id)}
+                onDecrease={() => decreaseQuantity(item.id)}
+                onRemove={() => removeItemFromCart(item.id)}
               />
             ))
           ) : (
@@ -124,7 +112,7 @@ const UserCartComponent = () => {
             {cartItems.map((item) => (
               <div className="flex justify-between" key={item.id}>
                 <p className="font-satoshi text-lg text-darkPrimary">
-                  {item.quantity} x {item.heading}
+                  {item.quantity} x {item.name}
                 </p>
                 <p className="font-satoshi text-lg text-darkPrimary">
                   £{(item.price * item.quantity).toFixed(2)}

@@ -2,13 +2,13 @@
 import { Rule } from '@sanity/types';
 
 export default {
-  name: 'salesRecord',
-  title: 'Sales Record',
+  name: 'order',
+  title: 'Order',
   type: 'document',
   fields: [
     {
-      name: 'salesRecordId',
-      title: 'Sales Record ID',
+      name: 'orderId',
+      title: 'Order ID',
       type: 'string',
       validation: (Rule: Rule) => Rule.required(),
     },
@@ -17,26 +17,24 @@ export default {
       title: 'Product ID',
       type: 'reference',
       to: [{ type: 'product' }], // Reference to the product schema
-      validation: (Rule: Rule) => Rule.required(),
     },
     {
       name: 'userId',
       title: 'User ID',
       type: 'reference',
       to: [{ type: 'user' }], // Reference to the user schema
-      validation: (Rule: Rule) => Rule.required(),
     },
     {
-      name: 'salesData',
-      title: 'Sales Data',
+      name: 'orderData',
+      title: 'Order Data',
       type: 'array',
       of: [
         {
           type: 'object',
           fields: [
             {
-              name: 'saleDate',
-              title: 'Sale Date',
+              name: 'orderDate',
+              title: 'Order Date',
               type: 'datetime',
               validation: (Rule: Rule) => Rule.required(),
             },
@@ -69,7 +67,6 @@ export default {
               title: 'Original Price',
               type: 'reference',
       to: [{ type: 'product' }], // Reference to the product schema
-      validation: (Rule: Rule) => Rule.required(),
             },
             {
               name: 'costPrice',

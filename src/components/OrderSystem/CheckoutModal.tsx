@@ -19,6 +19,7 @@ const CheckoutModal = ({
     city: "",
     zipCode: "",
     state: "",
+    country: ""
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -28,6 +29,7 @@ const CheckoutModal = ({
   const [trackingData, setTrackingData] = useState<any | null>(null);
   const [isTracking, setIsTracking] = useState(false);
   const [shippingCharges, setShippingCharges] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false); // New state for loading
 
   const countries = [
     { code: "+92", name: "Pakistan", flag: "🇵🇰" },
@@ -80,13 +82,10 @@ const CheckoutModal = ({
       // Store user data in localStorage (or use another storage mechanism)
       localStorage.setItem("userData", JSON.stringify(userData));
 
-      // You can also pass the data to the parent component using onSubmit
-      onSubmit(userData);
-      closeModal();
+      // Trigger the checkout process
+      handleCheckout(userData);
     }
   };
-
-  if (!isOpen) return null;
 
   function generateOrderId(): string {
     const randomDigits = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit number
@@ -96,7 +95,8 @@ const CheckoutModal = ({
   const orderId = generateOrderId();
 
    // Shipment API
-   const handleCheckout = async (userData: any, cartItems: any[]) => {
+   const handleCheckout = async (userData: any) => {
+     setIsLoading(true); // Set loading to true while waiting for response
     const addressFrom = {
       name: "E-commerce Store",
       street1: "123 Store Lane",
@@ -112,7 +112,7 @@ const CheckoutModal = ({
       city: userData.city,
       state: userData.state,
       zip: userData.zipCode,
-      country: "US", // assuming the user is ordering from the US
+      country: userData.country, // Dynamic country from form
     };
 
     const parcels = [
@@ -137,7 +137,7 @@ const CheckoutModal = ({
           addressTo,
           parcels,
           orderId: orderId,
-          totalAmount: cartItems.reduce((total, item) => total + item.price, 0),
+          totalAmount: 100, // Example price, use actual cart items price
         }),
       });
 
@@ -149,7 +149,6 @@ const CheckoutModal = ({
           eta: data.eta,
           trackingNumber: data.trackingNumber,
         });
-
         setShippingCharges(data.shippingCharges || 0);
         setCheckoutStatus("Order placed successfully!");
       } else {
@@ -158,6 +157,8 @@ const CheckoutModal = ({
     } catch (error) {
       console.error("Checkout Error:", error);
       setCheckoutStatus("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false); // Stop loading after API call finishes
     }
   };
 
@@ -203,12 +204,12 @@ const CheckoutModal = ({
         body: JSON.stringify({
           to: email,
           subject: "Your Order Confirmation",
-          text: `
-            Order ID: ${data.orderId}
+          text: 
+            `Order ID: ${data.orderId}
             Total Amount: ${data.totalAmount}
             ETA: ${data.eta}
-            Tracking Number: ${data.trackingNumber}
-          `,
+            Tracking Number: ${data.trackingNumber}`
+          ,
         }),
       });
     } catch (error) {
@@ -216,12 +217,16 @@ const CheckoutModal = ({
     }
   };
 
+
+
   return (
+    <>
+    {isOpen && (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-         {!shipmentDetails ? (
-      <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 p-6">
-        <h2 className="text-2xl font-bold mb-4">Enter Your Details</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+      {!shipmentDetails ? (
+        <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 p-6 max-h-[90vh] overflow-y-auto">
+          <h2 className="text-2xl font-bold mb-4">Enter Your Details</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
           {/* Row 1: Name and Email */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -342,27 +347,43 @@ const CheckoutModal = ({
             </div>
           </div>
 
-          <div className="flex justify-end gap-6">
-            <button
-              type="button"
-              onClick={closeModal}
-              className="px-6 py-2 bg-gray-300 text-white rounded-md hover:bg-gray-400"
-            >
-              Close
-            </button>
-            <button
-              type="submit"
-              className="px-6 py-2 bg-darkPrimary text-white rounded-md hover:bg-navbarColor"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
-    </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="country" className="block font-medium">Country Name</label>
+                <input
+                  name="country"
+                  value={formData.country}
+                  onChange={handleChange}
+                  placeholder="Enter your country name"
+                  className="border rounded-lg w-full p-2"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-6">
+              <button
+                type="button"
+                onClick={closeModal}
+                className="px-6 py-2 bg-gray-300 text-white rounded-md hover:bg-gray-400"
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                className="px-6 py-2 bg-darkPrimary text-white rounded-md hover:bg-navbarColor"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
       ) : (
-<div className="bg-white rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 p-6">
-         {/* Shipment Details */}
-      {checkoutStatus && <p className="text-blue-600 mt-4">{checkoutStatus}</p>}
+        <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 p-6 max-h-[90vh] overflow-y-auto">
+          {/* Show shipment details */}
+          {checkoutStatus && <p className="text-blue-600 mt-4">{checkoutStatus}</p>}
+          {isLoading && <p className="text-gray-500">Loading...</p>}
+
+          {/* Shipment Details */}
       {shipmentDetails && (
   <div className="mt-8 bg-green-100 p-6 rounded-lg">
     <h3 className="text-xl font-bold">Shipment Details</h3>
@@ -374,7 +395,7 @@ const CheckoutModal = ({
 )}
 
      {/* Track Shipment Card */}
-<div className="mt-6 bg-white p-6 rounded-lg shadow-md">
+<div className="mt-6 bg-white p-6 rounded-lg  shadow-lg shadow-gray-600">
   <h1 className="text-2xl font-bold mb-4">Track Your Shipment</h1>
   <p className="p-2">Write (SHIPPO_TRANSIT) in input field to track history</p>
   <div className="flex space-x-4 mb-6">
@@ -399,8 +420,6 @@ const CheckoutModal = ({
             <h2 className="text-lg font-bold mb-4">Shipment Tracking Details</h2>
             <p><strong>Tracking Number:</strong> {trackingData.trackingDetails.tracking_number}</p>
             <p><strong>Carrier:</strong> {trackingData.trackingDetails.carrier}</p>
-            <p><strong>Status:</strong> {trackingData.trackingDetails.status}</p>
-            <p><strong>Status Details:</strong> {trackingData.trackingDetails.status_details || "N/A"}</p>
             <p><strong>ETA:</strong> {trackingData.trackingDetails.eta || "N/A"}</p>
             <p><strong>Origin:</strong> {`${trackingData.trackingDetails.address_from.city}, ${trackingData.trackingDetails.address_from.state}, ${trackingData.trackingDetails.address_from.country}`}</p>
             <p><strong>Destination:</strong> {`${trackingData.trackingDetails.address_to.city}, ${trackingData.trackingDetails.address_to.state}, ${trackingData.trackingDetails.address_to.country}`}</p>
@@ -425,9 +444,21 @@ const CheckoutModal = ({
           <p className="text-gray-500">Enter a tracking number to see shipment details.</p>
         )}
       </div>
-      </div>
-      )};
-      </div>
+
+     <div className="flex justify-end mt-6 mb-2">
+     <button
+                type="button"
+                onClick={closeModal}
+                className="px-6 py-2 bg-darkPrimary text-white rounded-md hover:bg-gray-400"
+              >
+                Close
+              </button>
+     </div>
+        </div>
+      )}
+    </div>
+  )}
+  </>
   );
 };
 

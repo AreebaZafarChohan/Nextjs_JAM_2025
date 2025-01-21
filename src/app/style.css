@@ -1131,49 +1131,16 @@
 }
 
 /* Products Section */
-@media screen and (max-width: 1432px) {
-  .product-sec h1 {
-    font-size: 2.25rem;
-  }
-}
 
 @media screen and (max-width: 1423px) {
-  .product-sec h1 {
-    font-size: 2.23rem;
-  }
-
   .product-sec-card {
     margin-left: 1.8rem;
   }
 }
 
-@media screen and (max-width: 1414px) {
-  .product-sec h1 {
-    font-size: 2.2rem;
-  }
-}
-
 @media screen and (max-width: 1400px) {
-  .product-sec h1 {
-    font-size: 2.18rem;
-  }
-
   .product-sec-card {
     margin-left: 1.5rem;
-  }
-}
-
-@media screen and (max-width: 1391px) {
-  .product-sec h1 {
-    font-size: 2.16rem;
-  }
-}
-
-@media screen and (max-width: 1384px) {
-  .product-sec h1 {
-    font-size: 2.14rem;
-    top: 7.9rem;
-    left: 4.9rem;
   }
 }
 
@@ -1184,13 +1151,6 @@
 
   .product-sec-btn button {
     left: 35rem;
-  }
-}
-
-@media screen and (max-width: 1368px) {
-  .product-sec h1 {
-    top: 7.8rem;
-    left: 4.8rem;
   }
 }
 
@@ -1205,32 +1165,8 @@
 }
 
 @media screen and (max-width: 1355px) {
-  .product-sec h1 {
-    left: 4.7rem;
-  }
-
   .product-sec-card {
     margin-left: 1rem;
-  }
-}
-
-@media screen and (max-width: 1347px) {
-  .product-sec h1 {
-    left: 4.6rem;
-  }
-}
-
-@media screen and (max-width: 1340px) {
-  .product-sec h1 {
-    left: 4.5rem;
-  }
-}
-
-@media screen and (max-width: 1334px) {
-  .product-sec h1 {
-    left: 4.5rem;
-    font-size: 2.1rem;
-    top: 7.7rem;
   }
 }
 
@@ -1240,17 +1176,7 @@
   }
 }
 
-@media screen and (max-width: 1314px) {
-  .product-sec h1 {
-    left: 4.4rem;
-  }
-}
-
 @media screen and (max-width: 1308px) {
-  .product-sec h1 {
-    font-size: 2.05rem;
-  }
-
   .product-sec-card {
     gap: 1rem;
     margin-left: auto;
@@ -1259,29 +1185,12 @@
 }
 
 @media screen and (max-width: 1286px) {
-  .product-sec h1 {
-    left: 4.3rem;
-    font-size: 2.02rem;
-  }
-
-  .product-sec-card {
+    .product-sec-card {
     gap: 0.5rem;
   }
 }
 
-@media screen and (max-width: 1262px) {
-  .product-sec h1 {
-    left: 4.2rem;
-    font-size: 2.01rem;
-  }
-}
-
 @media screen and (max-width: 1250px) {
-  .product-sec h1 {
-    left: 4.2rem;
-    font-size: 2rem;
-  }
-
   .product-sec-card {
     gap: 0.2rem;
   }
@@ -1292,12 +1201,6 @@
 }
 
 @media screen and (max-width: 1242px) {
-  .product-sec h1 {
-    left: 4.12rem;
-    font-size: 1.95rem;
-    top: 7.75rem;
-  }
-
   .product-sec-card {
     gap: 2rem;
   }
@@ -1305,14 +1208,6 @@
   .product-card,
   .product-card button {
     width: 270px;
-  }
-}
-
-@media screen and (max-width: 1214px) {
-  .product-sec h1 {
-    left: 28rem;
-    font-size: 3rem;
-    top: 5.75rem;
   }
 }
 
@@ -1360,11 +1255,6 @@
   .product-sec-card {
     gap: 1rem;
   }
-
-  .product-sec h1 {
-    left: 26rem;
-    font-size: 2.5rem;
-  }
 }
 
 @media screen and (max-width: 1052px) {
@@ -1376,36 +1266,23 @@
     gap: 0.3rem;
   }
 
-  .product-sec h1 {
-    left: 25rem;
-  }
 }
 
 @media screen and (max-width: 1023px) {
   .product-sec-btn button {
     left: 23rem;
-    top: 16rem;
-  }
-
-  .product-card,
-  .product-card button {
-    width: 250px;
+    top: 86rem;
   }
 
   .product-sec-card {
     gap: 3rem;
-    row-gap: 9rem;
+    row-gap: 6rem;
     grid-template-columns: repeat(3, 1fr);
     margin-left: auto;
     margin-right: auto;
     padding: 0;
   }
 
-  .product-sec h1 {
-    left: 25rem;
-    font-size: 2rem;
-    top: 3.5rem;
-  }
 }
 
 @media screen and (max-width: 936px) {

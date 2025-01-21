@@ -41,6 +41,6 @@ export default {
       { name: 'marketing', type: 'number', title: 'Marketing Expense' },
       { name: 'restocking', type: 'number', title: 'Restocking Expense' }
     ] },
-    { name: 'createdAt', type: 'datetime', title: 'Report Created At' }
-  ]
+    { name: 'createdAt', type: 'datetime', title: 'Report Created At' }
+  ]
 };

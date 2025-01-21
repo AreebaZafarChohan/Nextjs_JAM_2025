@@ -1,16 +1,92 @@
 "use client";
+import { client } from "@/sanity/lib/client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
+
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  color: string;
+  material: string;
+  dimensions: string;
+  stock: number;
+  added_on: string;
+  imageUrl: string;
+  rating: number;
+  rating_counts: number;
+  category: string;
+  comments: string[];
+}
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [productData, setProductData] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
   const toggleSearch = () => setIsSearchOpen((prev) => !prev);
+
+  // Fetch products from Sanity
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const products: Product[] = await client.fetch(
+          `*[_type=="product"]{
+          id,
+          name,
+          description,
+          price,
+          color,
+          material,
+          dimensions,
+          "stock": stock->stock,
+          added_on,
+          "imageUrl": image.asset->url,
+          rating,
+          rating_counts,
+          category,
+          comments,
+        }`
+        );
+        setProductData(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Filter products based on search query
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredProducts([]);
+    } else {
+      const results = productData.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredProducts(results);
+    }
+  }, [searchQuery, productData]);
+
+  // Filter products based on search query
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredProducts([]);
+    } else {
+      const results = productData.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredProducts(results);
+    }
+  }, [searchQuery, productData]);
 
   return (
     <nav className="relative w-full p-6 md:py-5 bg-white">
@@ -46,9 +122,51 @@ const Header = () => {
         <div className="mt-4">
           <input
             type="text"
-            placeholder="Search"
-            className="w-full border placeholder:text-white  bg-black/40 text-white border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full md:w-[70%] border placeholder:text-black  bg-black/10 text-black border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-black"
           />
+          {/* Display filtered products */}
+          <div className="my-4">
+            {filteredProducts.length > 0 ? (
+              <ul className="bg-white border border-gray-200 rounded-md shadow-md grid grid-cols-3">
+                {filteredProducts.map((product) => (
+                  <li
+                  key={product.id}
+                  className="p-4 flex items-center justify-between border-b last:border-none border-r"
+                >
+                  <div className="flex items-center space-x-4">
+                    <Image
+                      src={product.imageUrl}
+                      alt={product.name}
+                      width={50}
+                      height={50}
+                      className="rounded-md"
+                    />
+                    <div>
+                      <p className="font-medium text-darkBlue">{product.name}</p>
+                      <p className="text-gray-600">${product.price}</p>
+                    </div>
+                  </div>
+                
+                  {/* Align View button to the right */}
+                  <div>
+                    <Link href={`/products/${product.id}`}>
+                      <button className="text-white border border-darkPrimary bg-darkBlue px-4 py-2 rounded-md hover:bg-lightGray hover:text-darkPrimary">
+                        View
+                      </button>
+                    </Link>
+                  </div>
+                </li>
+                ))}
+              </ul>
+            ) : (
+              searchQuery && (
+                <p className="mt-2 text-gray-500">No products found.</p>
+              )
+            )}
+          </div>
         </div>
       )}
 
@@ -65,34 +183,10 @@ const Header = () => {
           Home
         </Link>
         <Link
-          href="/"
-          className="block text-center text-darkPrimary border-b border-transparent py-1 hover:border-darkPrimary"
-        >
-          Tables
-        </Link>
-        <Link
-          href="/"
-          className="block text-center text-darkPrimary border-b border-transparent py-1 hover:border-darkPrimary"
-        >
-          Chairs
-        </Link>
-        <Link
-          href="/"
-          className="block text-center border-b border-transparent py-1 hover:border-darkPrimary"
-        >
-          Crockery
-        </Link>
-        <Link
-          href="/"
-          className="block text-center border-b border-transparent py-1 hover:border-darkPrimary"
-        >
-          Cutlery
-        </Link>
-        <Link
           href="/products"
           className="block text-center border-b border-transparent py-1 hover:border-darkPrimary"
         >
-          All Products
+          Products
         </Link>
         <Link
           href="/about"
@@ -101,23 +195,30 @@ const Header = () => {
           About
         </Link>
         <Link
+          href="/contact"
+          className="block text-center border-b border-transparent py-1 hover:border-darkPrimary"
+        >
+          Contact
+        </Link>
+        <Link
           href="/admin"
           className="block text-center border-b border-transparent py-1 hover:border-darkPrimary"
         >
           Admin Pannel
         </Link>
 
-        <div className="flex gap-4 justify-center">
+        <div className="relative flex gap-4 justify-center">
           {/* User Icon */}
           <Link href="/" aria-label="User Profile">
-            <div className="md:relative md:bottom-[5rem] lg:bottom-7 md:left-[3rem] lg:left-[-1rem] flex items-center justify-center w-6 h-6 rounded-full border border-transparent hover:bg-lightGray">
-            <FaUserCircle/>
+            <div className="stick right-[18rem] flex items-center justify-center w-6 h-6 rounded-full border border-transparent hover:bg-lightGray">
+              <FaUserCircle />
             </div>
           </Link>
 
+          {/* Cart Icon */}
           <Link href="/usercart" aria-label="Cart">
-            <div className="md:relative md:bottom-[5rem] lg:bottom-7 md:left-[2.5rem] lg:left-[-2rem] flex items-center justify-center w-6 h-6 rounded-full border border-transparent hover:bg-lightGray">
-            <FaShoppingCart/>
+            <div className="stick  right-[16rem] flex items-center justify-center w-6 h-6 rounded-full border border-transparent hover:bg-lightGray">
+              <FaShoppingCart />
             </div>
           </Link>
         </div>
