@@ -1271,15 +1271,15 @@
 @media screen and (max-width: 1023px) {
   .product-sec-btn button {
     left: 23rem;
-    top: 86rem;
+    top: 85rem;
   }
 
   .product-sec-card {
     gap: 3rem;
-    row-gap: 6rem;
+    row-gap: 4rem;
     grid-template-columns: repeat(3, 1fr);
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 8px;
+    margin-right: 8px;
     padding: 0;
   }
 
@@ -1298,7 +1298,7 @@
 
   .product-sec-card {
     gap: 2rem;
-    row-gap: 12rem;
+    row-gap: 4rem;
   }
 
   .product-sec-btn button {
@@ -1313,7 +1313,7 @@
 
   .product-sec-card {
     gap: 1rem;
-    row-gap: 12rem;
+    row-gap: 3rem;
   }
 
   .product-sec-btn button {
@@ -1328,7 +1328,7 @@
 
   .product-sec-card {
     gap: 0.3rem;
-    row-gap: 12rem;
+    row-gap: 4rem;
   }
 
   .product-sec-btn button {
@@ -1347,25 +1347,21 @@
     margin-left: 1.5rem;
   }
 
-  .product-card,
-  .product-card button {
-    width: 230px;
-  }
-
   .product-sec-card {
     gap: 1rem;
-    row-gap: 12rem;
+    row-gap: 6rem;
   }
 }
 
 @media screen and (max-width: 745px) {
   .product-sec-btn button {
     margin-left: 13rem;
+    margin-top: 85rem;
   }
 
   .product-sec-card {
     gap: 0.5rem;
-    row-gap: 12rem;
+    row-gap: 4rem;
   }
 }
 
@@ -1376,7 +1372,7 @@
 
   .product-sec-card {
     gap: 0.2rem;
-    row-gap: 12rem;
+    row-gap: 4rem;
   }
 }
 
@@ -1387,8 +1383,9 @@
   }
 
   .product-sec-btn button {
-    margin-top: 22rem;
-    margin-left: 12rem;
+   position: relative;
+   top: 53rem;
+    left: 0rem;
     width: 250px;
   }
 
@@ -1397,76 +1394,125 @@
     width: 300px;
   }
 
+  .productPage {
+    height: auto;
+  }
+
+  .product-sec {
+    height: 3250px;
+  }
+
   .product-sec-card {
     gap: 2rem;
-    row-gap: 12rem;
+    row-gap: 2rem;
     grid-template-columns: repeat(2, 1fr);
     margin-left: auto;
     margin-right: auto;
     padding: 0;
-    bottom: 4rem;
+    bottom: 0rem;
   }
 }
 
 @media screen and (max-width: 664px) {
   .product-sec-btn button {
-    margin-top: 18rem;
-    margin-left: 12rem;
+    position: relative;
+   top: 53rem;
+    left: 0rem;
   }
 }
 
 @media screen and (max-width: 650px) {
   .product-sec-btn button {
-    margin-left: 10rem;
+    position: relative;
+   top: 53rem;
+    left: 0rem;
   }
 
   .product-sec-card {
     gap: 1rem;
-    row-gap: 12rem;
+    row-gap: 2rem;
+  }
+
+  .productPage {
+    height: auto;
+  }
+
+  .product-sec {
+    height: 3250px;
   }
 }
 
 @media screen and (max-width: 639px) {
   .product-sec-card {
-    bottom: 6rem;
-    row-gap: 6rem;
+    bottom: 4rem;
+    row-gap: 2rem;
   }
 
   .product-sec-btn button {
-    margin-top: 15rem;
+    position: relative;
+   top: 50rem;
+    left: 0rem;
   }
 
   .product-sec h1 {
     left: 15rem;
   }
+
+  .productPage {
+    height: auto;
+  }
+
+  .product-sec {
+    height: 3250px;
+  }
 }
+
 
 @media screen and (max-width: 620px) {
   .product-sec-card {
     gap: 0.3rem;
-    row-gap: 6rem;
+    row-gap: 2rem;
   }
 
+
   .product-sec-btn button {
-    margin-left: 10rem;
+    position: relative;
+    top: 50rem;
+     left: -2rem;
+  }
+
+  
+  .productPage {
+    height: auto;
+  }
+
+  .product-sec {
+    height: 3250px;
   }
 }
 
 @media screen and (max-width: 605px) {
-  .product-card,
-  .product-card button {
-    width: 250px;
-  }
 
   .product-sec-card {
     gap: 2rem;
-    row-gap: 6rem;
+    row-gap: 2rem;
+  }
+
+  .productPage {
+    height: auto;
+  }
+
+  .product-sec {
+    height: 3250px;
   }
 }
 
 @media screen and (max-width: 590px) {
   .product-sec-btn button {
-    margin-left: 8rem;
+    position: none;
+    width: 100%;
+    margin: 85rem 12px;
+    margin-left: 32px;
   }
 
   .product-sec h1 {
@@ -1476,100 +1522,186 @@
 
 @media screen and (max-width: 540px) {
   .product-sec-btn button {
-    margin-left: 7rem;
+    position: none;
+    width: 100%;
+    margin: 85rem 12px;
+    margin-left: 32px;
   }
 
   .product-sec-card {
     gap: 1rem;
-    row-gap: 6rem;
+    row-gap: 2rem;
   }
 
   .product-sec h1 {
     left: 12rem;
   }
+
+  .productPage {
+    height: auto;
+  }
+
+  .product-sec {
+    height: 3250px;
+  }
 }
 
 @media screen and (max-width: 530px) {
   .product-sec-btn button {
-    margin-left: 6rem;
+    position: none;
+    width: 100%;
+    margin: 85rem 12px;
+    margin-left: 32px;
   }
 
   .product-sec-card {
     gap: 0.3rem;
-    row-gap: 6rem;
+    row-gap: 2rem;
+  }
+
+  .productPage {
+    height: auto;
+  }
+
+  .product-sec {
+    height: 3250px;
+    margin-left: 4px;
+    margin-right: 4px;
   }
 }
 
-@media screen and (max-width: 530px) {
-  .product-sec h1 {
-    left: 10rem;
-  }
-
-  .product-card,
-  .product-card button {
-    width: 200px;
-  }
-
+@media screen and (max-width: 467px) {
   .product-sec-card {
-    gap: 2rem;
-    row-gap: 6rem;
+    row-gap: 2rem;
   }
 
   .product-sec-btn button {
-    margin-top: 12rem;
-  }
-}
-
-@media screen and (max-width: 460px) {
-  .product-sec-card {
-    gap: 1rem;
-    row-gap: 6rem;
-  }
-
-  .product-sec-btn button {
-    margin-left: 0rem;
+    position: none;
     width: 100%;
+    margin-top: 87rem;
+    margin-left: 32px;
+    margin-right: 12px;
+  }
+
+  .productPage {
+    height: auto;
+  }
+
+  .product-sec {
+    height: 3250px;
+    margin-left: 4px;
+    margin-right: 4px;
   }
 }
 
 @media screen and (max-width: 425px) {
   .product-sec-card {
-    gap: 0.5rem;
-    row-gap: 6rem;
+    row-gap: 2rem;
   }
 
+  .product-sec-btn button {
+    position: none;
+    width: 100%;
+    margin: 85rem 12px;
+    margin-left: 32px;
+  }
+
+  .productPage {
+    height: auto;
+  }
+
+  .product-sec {
+    height: 3250px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
   .product-sec h1 {
     left: 8rem;
   }
 }
 
-@media screen and (max-width: 410px) {
-  .product-card,
-  .product-card button {
-    width: 180px;
+@media screen and (max-width: 455px) {
+  .product-sec-card {
+    row-gap: 2rem;
+    grid-template-columns: 1fr;
   }
 
+  .productPage {
+    height: auto;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .product-sec {
+    height: 6000px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .product-sec-btn button {
+    position: relative;
+    width: 100%;
+    top: 220rem;
+    margin-left: 32px;
+  }
+}
+
+@media screen and (max-width: 410px) {
   .product-sec-card {
-    gap: 1rem;
-    row-gap: 6rem;
+    row-gap: 2rem;
+    grid-template-columns: 1fr;
+  }
+
+  .productPage {
+    height: auto;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .product-sec {
+    height: 6000px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .product-sec-btn button {
+    position: relative;
+    width: 100%;
+    top: 220rem;
+    margin-left: 32px;
   }
 }
 
 @media screen and (max-width: 390px) {
-  .product-card,
-  .product-card .img,
-  .product-card button {
-    width: 160px;
-  }
-
-  .product-card button {
-    margin-left: 0.6rem;
-    margin-bottom: 0.5rem;
-  }
-
   .product-sec-card {
-    gap: 1rem;
-    row-gap: 6rem;
+    row-gap: 2rem;
+    grid-template-columns: 1fr;
+  }
+
+  .productPage {
+    height: auto;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .product-sec {
+    height: 6000px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .product-sec-btn button {
+    position: relative;
+    width: 100%;
+    top: 222rem;
+    margin-left: 32px;
   }
 }
 

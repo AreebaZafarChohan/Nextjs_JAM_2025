@@ -91,7 +91,7 @@ const ProductsComponent = () => {
 
 
   return (
-    <div className="relative  flex flex-col w-full lg:h-[2439px] md:h-[2439px] product-sec">
+    <div className="relative  flex flex-col w-full lg:h-[2439px] md:h-[2900px] product-sec">
       {/* Product Image Section */}
       <div className="relative w-full lg:h-[2439px] h-[146px] ">
         <Image
@@ -329,7 +329,7 @@ const ProductsComponent = () => {
       </div>
       </div>
 
-      <div className="relative lg:bottom-[85rem] h-[625px] grid grid-cols-2 lg:grid-cols-4 gap-[2rem] md:gap-0 md:pr-32 lg:pr-0 gap-y-[6rem] lg:gap-y-[10rem] lg:gap-[2rem] lg:mx-4 lg:mt-0 md:mx-auto xl:ml-8 product-sec-card">
+      <div className="relative lg:bottom-[85rem] h-[625px] grid grid-cols-2 lg:grid-cols-4 gap-[2rem] md:gap-0 md:pr-32 lg:pr-0 gap-y-[6rem] lg:gap-y-[10rem] lg:gap-[2rem] lg:mx-4 lg:mt-0 md:mx-4 xl:ml-8 product-sec-card">
       {productData?.length ? (
     productData.map((product) => (
       <div key={product.id}>

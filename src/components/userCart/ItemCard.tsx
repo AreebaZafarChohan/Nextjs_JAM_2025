@@ -21,13 +21,13 @@ const ItemCard: React.FC<ExtendedCardProps> = ({
 
 
   return (
-    <div className="flex gap-4 bg-white rounded-lg p-4 shadow-md my-2">
+    <div className="flex md:flex-row flex-col gap-4 bg-white rounded-lg p-4 shadow-md my-2">
       <img
         src={image}
         alt={`${name} Image`}
         width={200}
         height={200}
-        className="w-[100px] h-[100px] object-cover rounded-lg"
+        className="w-full md:w-[100px] h-[200px] md:h-[100px] object-cover rounded-lg"
       />
       <div className="flex-1">
         <h5 className="font-clash text-lg text-darkPrimary">{name}</h5>
@@ -56,7 +56,7 @@ const ItemCard: React.FC<ExtendedCardProps> = ({
           Remove
         </button>
       </div>
-      <div className="pr-[19rem]">
+      <div className="md:pr-[19rem]">
         <p className="font-clash text-darkPrimary text-lg">
           £{(priceValue * quantity).toFixed(2)}
         </p>

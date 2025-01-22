@@ -80,7 +80,7 @@ const ProductCard: React.FC<{ productData: CardProps }> = ({ productData }) => {
   return (
     <div
       key={productData.id}
-      className="relative flex flex-col gap-4 product-card bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow"
+      className="relative flex flex-col gap-4 bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow card"
       style={{ minHeight: "350px" }} // Ensure cards have a consistent minimum height
     >
       {/* Product Image */}
@@ -89,7 +89,7 @@ const ProductCard: React.FC<{ productData: CardProps }> = ({ productData }) => {
         alt={productData.name || "Product Image"}
         width={200}
         height={200}
-        className="w-full h-[300px] object-cover rounded-md"
+        className="w-full lg:h-[300px] md:h-[200px] h-[200px] object-cover rounded-md"
       />
 
       {/* Product Details */}
@@ -105,26 +105,26 @@ const ProductCard: React.FC<{ productData: CardProps }> = ({ productData }) => {
         </div>
 
         {/* Rating and Stock */}
-        <div className="flex justify-between items-center mt-2">
-          <h4 className="font-sans font-semibold text-sm bg-yellow-500 px-2 py-1 rounded">
+        <div className="flex lg:justify-between items-center mt-2 lg;gap-0 gap-6">
+          <h4 className="w-1/2 font-satoshi font-semibold text-xs sm:text-sm bg-yellow-500 px-2 py-1 rounded ">
             {`Rating - ${productData.rating}`}
           </h4>
-          <p className="font-sans font-bold text-xs text-green-500">
+          <p className="w-1/2 font-clash font-bold text-xs text-green-500">
             {`In Stock (${productData.stock || "Out of stock"})`}
           </p>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-between items-center mt-4 gap-2">
+        <div className="flex lg:justify-between lg:items-center mt-4 gap-2 lg:flex-row flex-col">
           <button
             onClick={handleAddToCart}
-            className="w-[120px] rounded px-4 py-2 bg-black/70 text-white hover:bg-gray-900"
+            className="lg:w-[120px] rounded px-4 py-2 bg-black/70 text-white hover:bg-gray-900"
           >
             Add to Cart
           </button>
           <Link
             href={`/products/${productData.id}`}
-            className="w-[120px] rounded px-4 py-2 bg-gray-200 text-black hover:bg-gray-400"
+            className="lg:w-[120px] rounded px-4 py-2 bg-gray-200 text-center text-black hover:bg-gray-400"
           >
             See Details
           </Link>

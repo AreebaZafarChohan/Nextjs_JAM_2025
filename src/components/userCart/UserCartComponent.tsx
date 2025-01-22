@@ -83,14 +83,14 @@ const UserCartComponent = () => {
         <hr className="bg-lightGray" />
       </div>
 
-      <div className="mx-4 flex justify-between mt-8 gap-4">
+      <div className="mx-auto md:mx-4 flex md:flex-row flex-col md:justify-between mt-8 gap-4">
         {/* Left side: Products List */}
-        <div className="w-2/3">
+        <div className="w-full md:w-2/3">
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
               <ItemCard
                 key={item.id}
-                image={item.imageUrl}
+                image={item.image}
                 name={item.name}
                 price={item.price}
                 quantity={item.quantity}
@@ -105,7 +105,7 @@ const UserCartComponent = () => {
         </div>
 
         {/* Right side: Subtotal & Summary */}
-        <div className="w-1/3 p-4 bg-white rounded-lg shadow-md mx-4">
+        <div className="w-full md:w-1/3 p-4 bg-white rounded-lg shadow-md mx-auto md:mx-4">
           <h4 className="font-clash text-darkPrimary text-xl mb-4">Summary</h4>
           <div className="space-y-4">
             {/* List products and their prices */}
@@ -128,10 +128,10 @@ const UserCartComponent = () => {
           </div>
           <div className="flex justify-between">
             <p className="font-satoshi text-lg text-darkPrimary">Taxes & Shipping</p>
-            <p className="font-satoshi text-lg text-darkPrimary">Calculated at checkout</p>
+            <p className="font-satoshi text-lg text-green-500">(Free)</p>
           </div>
 
-          <div className="flex justify-between items-center mt-6">
+          <div className="flex justify-between lg:items-center mt-6 lg:flex-row flex-col lg:gap-0 gap-4">
             <button onClick={handleOpenModal} className="px-6 py-2 bg-darkPrimary text-white rounded-md hover:bg-navbarColor">
               Go to checkout
             </button>
