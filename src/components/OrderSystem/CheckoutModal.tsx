@@ -28,7 +28,6 @@ const CheckoutModal = ({
   const [trackingNumber, setTrackingNumber] = useState("");
   const [trackingData, setTrackingData] = useState<any | null>(null);
   const [isTracking, setIsTracking] = useState(false);
-  const [shippingCharges, setShippingCharges] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false); // New state for loading
 
   const countries = [
@@ -149,7 +148,6 @@ const CheckoutModal = ({
           eta: data.eta,
           trackingNumber: data.trackingNumber,
         });
-        setShippingCharges(data.shippingCharges || 0);
         setCheckoutStatus("Order placed successfully!");
       } else {
         setCheckoutStatus("Failed to place order. Please try again.");
@@ -194,7 +192,7 @@ const CheckoutModal = ({
     }
   };
 
-  const sendConfirmationEmail = async (email: string, data: any) => {
+ /* const sendConfirmationEmail = async (email: string, data: any) => {
     try {
       await fetch("/api/sendEmail", {
         method: "POST",
@@ -216,7 +214,7 @@ const CheckoutModal = ({
       console.error("Email Error:", error);
     }
   };
-
+ */
 
 
   return (
@@ -370,6 +368,7 @@ const CheckoutModal = ({
               </button>
               <button
                 type="submit"
+                onClick={onSubmit}
                 className="px-6 py-2 bg-darkPrimary text-white rounded-md hover:bg-navbarColor"
               >
                 Submit

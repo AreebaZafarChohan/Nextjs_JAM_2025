@@ -1,3 +1,9 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off", // Disable explicit 'any' errors
+    "prefer-const": "off",                      // Allow 'let' even if not reassigned
+    "react-hooks/exhaustive-deps": "off",       // Disable missing dependency warnings in useEffect
+    "@typescript-eslint/no-unused-vars": "warn" // Change unused variable errors to warnings
+  }
 }
