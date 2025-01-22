@@ -514,7 +514,7 @@ const CheckoutModal = ({
                           ))}
                       </ul>
                     ) : (
-                      <p>No tracking history with status 'TRANSIT'.</p>
+                      <p>No tracking history with status &apos;TRANSIT&apos;.</p>
                     )}
                   </div>
                 )}
