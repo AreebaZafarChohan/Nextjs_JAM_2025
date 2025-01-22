@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import ItemCard from "./ItemCard";
 import Link from "next/link";
-import CheckoutModal from "../OrderSystem/CheckoutModal";
+import dynamic from "next/dynamic";
 //import { useSession, signIn } from "next-auth/react";
 
 
@@ -10,6 +10,7 @@ const UserCartComponent = () => {
    // const { data: session } = useSession(); // Get session data
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const CheckoutModal = dynamic(() => import("../OrderSystem/CheckoutModal"));
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");

@@ -7,6 +7,7 @@ import FeatureCard from "../reuseableComponents/FeatureCard";
 import SignUp from "../heroSection/SignUp";
 import { CardProps } from "../../../types/components";
 import { client } from "@/sanity/lib/client";
+import { useRouter } from "next/navigation";
 
 const ProductCardDetails = () => {
   const params = useParams(); // Getting the route parameter
@@ -14,7 +15,8 @@ const ProductCardDetails = () => {
   const [details, setDetails] = useState<CardProps | null>(null);
   const [quantity, setQuantity] = useState<number>(1); // Default quantity set to 1
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Modal state
-   const [productData, setProductData] = useState<CardProps[] | null>(null);
+  const [productData, setProductData] = useState<CardProps[] | null>(null);
+  const router = useRouter();
 
   // Fetch product details from Sanity
   useEffect(() => {
@@ -43,7 +45,7 @@ const ProductCardDetails = () => {
         const productDetails = products.find(
           (item: CardProps) => item?.id?.toString() === productId
         );
-        
+
         setDetails(productDetails);
       } catch (error) {
         console.error("Error fetching product details:", error);
@@ -52,7 +54,6 @@ const ProductCardDetails = () => {
 
     fetchProductDetails();
   }, [productId]);
-  
 
   const increase = () => setQuantity(quantity + 1);
   const decrease = () => {
@@ -62,9 +63,11 @@ const ProductCardDetails = () => {
   // Handle Add to Cart functionality
   const handleAddToCart = () => {
     const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
-    
+
     // Check if the product already exists in the cart
-    const existingProductIndex = existingCart.findIndex((item: any) => item.id === productId);
+    const existingProductIndex = existingCart.findIndex(
+      (item: any) => item.id === productId
+    );
 
     if (existingProductIndex !== -1) {
       // Update the quantity of the existing product
@@ -92,11 +95,11 @@ const ProductCardDetails = () => {
     }, 3000);
   };
 
-   useEffect(() => {
-        const fetchProducts = async () => {
-          try {
-            const products = await client.fetch(
-              `*[_type=="product"][2..5]{
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const products = await client.fetch(
+          `*[_type=="product"][2..5]{
                 id,
                 name,
                 description,
@@ -112,15 +115,15 @@ const ProductCardDetails = () => {
                 category,
                 comments,
               }`
-            );
-            setProductData(products);
-          } catch (error) {
-            console.error("Error fetching products:", error);
-          }
-        };
-    
-        fetchProducts();
-      }, []);
+        );
+        setProductData(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
   return (
     <div className="relative w-full lg:h-[2827px] h-[3579px] mx-auto lg:mx-0 md:mx-auto ">
       {details && (
@@ -183,29 +186,26 @@ const ProductCardDetails = () => {
                   {`${details.dimensions?.height}cm`}
                 </h6>
                 <h6 className="font-normal font-clash leading-[19.6px] text-darkPrimary lg:text-lg md:text-base">
-                {`${details.dimensions?.width}cm`}
+                  {`${details.dimensions?.width}cm`}
                 </h6>
                 <h6 className="font-normal font-clash leading-[19.6px] text-darkPrimary lg:text-lg md:text-base">
-                {`${details.dimensions?.length}cm`}
+                  {`${details.dimensions?.length}cm`}
                 </h6>
               </div>
               <div className="border-t border-darkPrimary pt-2 my-2">
-              {
-  details.stock === 0 ? (
-    <p className="font-normal font-clash leading-[19.6px] text-red-500 lg:text-lg md:text-base">
-      Out of Stock
-    </p>
-  ) : (
-    <div className="flex gap-6">
-      <p className="font-normal font-clash leading-[19.6px] text-darkPrimary lg:text-lg md:text-base">
-        Available Stock
-      </p>
-      <p className="font-normal font-clash leading-[19.6px] text-green-500 lg:text-lg md:text-base">
-        ({details.stock})
-      </p>
-    </div>
-  )
-}
+                {details.stock !== undefined && details.stock !== null ? (
+                  details.stock === 0 ? (
+                    <p className="font-normal text-red-500">Out of Stock</p>
+                  ) : (
+                    <p className="font-normal text-green-500">
+                      ({details.stock} Available)
+                    </p>
+                  )
+                ) : (
+                  <p className="font-normal text-gray-500">
+                    Stock information unavailable
+                  </p>
+                )}
               </div>
             </div>
             <div className=" flex flex-col gap-[12px] ">
@@ -213,9 +213,7 @@ const ProductCardDetails = () => {
                 Quantity
               </h5>
               <div className="relative lg:top-5 mt-4 lg:mt-4 md:mt-10 flex items-center lg:justify-center space-x-4 md:space-x-0 bg-lightGray md:w-32 w-full quantity-btn">
-              
-
-              <button
+                <button
                   onClick={decrease}
                   className="bg-lightGray text-darkPrimary hover:bg-darkPrimary hover:text-white p-2 rounded w-full md:w-[50px] "
                 >
@@ -230,30 +228,29 @@ const ProductCardDetails = () => {
                 >
                   <p className="text-xl md:pr-0 pr-[4rem] py-1.5">+</p>
                 </button>
-
               </div>
               <div className="mt-4 flex gap-2">
-              <button
-                onClick={handleAddToCart}
-                className="relative md:top-5 md:w-[250px] w-full bg-darkPrimary px-[32px] py-[10px] font-satoshi font-normal leading-6 text-white hover:bg-navbarColor md:h-[3rem] add-to-cart"
-              >
-                Add to Cart
-              </button>
+                <button
+                  onClick={handleAddToCart}
+                  className="relative md:top-5 md:w-[250px] w-full bg-darkPrimary px-[32px] py-[10px] font-satoshi font-normal leading-6 text-white hover:bg-navbarColor md:h-[3rem] add-to-cart"
+                >
+                  Add to Cart
+                </button>
 
-              <button
-                onClick={() => window.location.href = '/products'}
-                className="relative md:top-5 md:w-[250px] w-full bg-lightGray px-[32px] py-[10px] font-satoshi font-normal leading-6 text-darkPrimary hover:bg-darkPrimary hover:text-white md:h-[3rem] see-less"
-              >
-                See Less
-              </button>
-            </div>
+                <button
+                  onClick={() => router.push('/products')}
+                  className="relative md:top-5 md:w-[250px] w-full bg-lightGray px-[32px] py-[10px] font-satoshi font-normal leading-6 text-darkPrimary hover:bg-darkPrimary hover:text-white md:h-[3rem] see-less"
+                >
+                  See Less
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-        {/* Popup Modal */}
-        {isModalOpen && (
+      {/* Popup Modal */}
+      {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg text-center">
             <h3 className="text-xl text-darkPrimary">Product added to cart!</h3>
@@ -271,7 +268,9 @@ const ProductCardDetails = () => {
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg text-center">
-            <h3 className="text-xl text-darkPrimary">{details?.name} added to cart!</h3>
+            <h3 className="text-xl text-darkPrimary">
+              {details?.name} added to cart!
+            </h3>
             <button
               onClick={() => setIsModalOpen(false)}
               className="mt-4 px-6 py-2 bg-darkPrimary text-white rounded-full"
@@ -282,21 +281,20 @@ const ProductCardDetails = () => {
         </div>
       )}
 
-
       <div className="w-full md:mt-[2rem] h-[811px] flex flex-col md:mx-8 lg:mx-0 xl:mx-7 detail-products">
         <h5 className="mt-[10rem] lg:mt-[10rem] md:mt-[15rem] leading-[24.6px] text-darkPrimary font-clash font-normal text-xl md:text-2xl lg:text-3xl">
           You might also like
         </h5>
         <div className="relative h-[625px] grid grid-cols-2 lg:grid-cols-4 gap-0 gap-y-[8rem] lg:gap-0 mt-[2rem]  detail-product-card ">
-        {productData?.length ? (
-    productData.map((product) => (
-      <div key={product.id}>
-        <ProductCard productData={product} />
-      </div>
-    ))
-  ) : (
-    <p>Loading products...</p>
-  )}
+          {productData?.length ? (
+            productData.map((product) => (
+              <div key={product.id}>
+                <ProductCard productData={product} />
+              </div>
+            ))
+          ) : (
+            <p>Loading products...</p>
+          )}
         </div>
 
         <button className="md:w-[250px] w-full md:relative lg:left-[34rem] lg:-bottom-[2rem] md:-bottom-[18rem] md:left-[16rem] py-[16px] px-[32px] bg-lightGray bg-opacity-[15%] leading-6 text-darkPrimary font-satoshi font-normal hover:bg-darkPrimary hover:text-white transition-all duration-300 ease-in-out mt-[8rem] btn">
@@ -305,40 +303,45 @@ const ProductCardDetails = () => {
       </div>
 
       <div className="relative w-full lg:top-[4rem] md:top-[22rem] mt-[26rem] lg:mt-0 h-[757px] detail-feature">
-      <div className="relative lg:h-[335px] mt-[8rem] w-full h-[757px] bg-white flex flex-col gap-[2rem] md:gap-0 lg:gap-[2rem] lg:justify-center lg:mx-auto lg:items-center mx-auto sm:mx-6 ">
-      <h4 className="font-clash text-2xl font-normal leading-[28px] lg:text-3xl pb-4 lg:p-0 px-8 feature-heading">
-        What makes our brand different
-      </h4>
+        <div className="relative lg:h-[335px] mt-[8rem] w-full h-[757px] bg-white flex flex-col gap-[2rem] md:gap-0 lg:gap-[2rem] lg:justify-center lg:mx-auto lg:items-center mx-auto sm:mx-6 ">
+          <h4 className="font-clash text-2xl font-normal leading-[28px] lg:text-3xl pb-4 lg:p-0 px-8 feature-heading">
+            What makes our brand different
+          </h4>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 md:pr-[3rem] lg:pr-0 lg:gap-8 hero-features" id="detail-features">
-        <FeatureCard
-          image="Delivery"
-          heading="Next day as standard"
-          para="Order before 3pm and get your order the next day as standard"
-        />
+          <div
+            className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 md:pr-[3rem] lg:pr-0 lg:gap-8 hero-features"
+            id="detail-features"
+          >
+            <FeatureCard
+              image="Delivery"
+              heading="Next day as standard"
+              para="Order before 3pm and get your order the next day as standard"
+            />
 
-        <FeatureCard
-          image="Checkmark"
-          heading="Made by true artisans"
-          para="Handmade crafted goods made with real passion and craftmanship"
-        />
+            <FeatureCard
+              image="Checkmark"
+              heading="Made by true artisans"
+              para="Handmade crafted goods made with real passion and craftmanship"
+            />
 
-        <FeatureCard
-          image="Purchase"
-          heading="Unbeatable prices"
-          para="For our materials and quality you won't find better prices anywhere"
-        />
+            <FeatureCard
+              image="Purchase"
+              heading="Unbeatable prices"
+              para="For our materials and quality you won't find better prices anywhere"
+            />
 
-        <FeatureCard
-          image="Sprout"
-          heading="Recycled packaging"
-          para="We use 100% recycled packaging to ensure our footprint is manageable"
-        />
-      </div>
-    </div>
+            <FeatureCard
+              image="Sprout"
+              heading="Recycled packaging"
+              para="We use 100% recycled packaging to ensure our footprint is manageable"
+            />
+          </div>
+        </div>
       </div>
       <div className="relative lg:bottom-[33rem] md:-bottom-[4rem]  mt-[12rem] lg:mt-[2rem] w-full h-[292px] detail-signup">
-      <div><SignUp /></div>
+        <div>
+          <SignUp />
+        </div>
       </div>
     </div>
   );
