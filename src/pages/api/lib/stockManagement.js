@@ -1,6 +1,6 @@
-import client from '../../../sanity'; 
 
 // Function to update stock in Sanity
+/*
 const updateStock = async (productId, decrementBy) => {
   try {
     const updatedProduct = await client
@@ -13,4 +13,4 @@ const updateStock = async (productId, decrementBy) => {
   } catch (error) {
     console.error('Error updating stock:', error);
   }
-};
+};  */
