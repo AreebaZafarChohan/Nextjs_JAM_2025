@@ -25,3 +25,10 @@ export interface CardProps {
         comment: string,
     }
 }
+
+
+export interface FeatureProprs {
+    image: string;
+    heading: string;
+    para: string;
+}
