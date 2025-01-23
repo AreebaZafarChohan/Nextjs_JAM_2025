@@ -81,7 +81,6 @@ const ProductCard: React.FC<{ productData: CardProps }> = ({ productData }) => {
     <div
       key={productData.id}
       className="relative flex flex-col gap-4 bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow "
-      style={{ minHeight: "350px" }} // Ensure cards have a consistent minimum height
     >
       {/* Product Image */}
       <Image

@@ -66,6 +66,7 @@ const UserCartComponent = () => {
     console.log(formData);
     localStorage.removeItem("cart");
     setCartItems([]);
+    
     handleCloseModal();
   };
 

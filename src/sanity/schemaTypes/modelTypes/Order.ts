@@ -57,28 +57,10 @@ export default {
               validation: (Rule: Rule) => Rule.required(),
             },
             {
-              name: 'profitPerItem',
-              title: 'Profit Per Item',
-              type: 'number',
-              validation: (Rule: Rule) => Rule.required(),
-            },
-            {
               name: 'originalPrice',
               title: 'Original Price',
               type: 'reference',
       to: [{ type: 'product' }], // Reference to the product schema
-            },
-            {
-              name: 'costPrice',
-              title: 'Cost Price',
-              type: 'number',
-              validation: (Rule: Rule) => Rule.required(),
-            },
-            {
-              name: 'totalProfit',
-              title: 'Total Profit',
-              type: 'number',
-              validation: (Rule: Rule) => Rule.required(),
             },
           ],
         },

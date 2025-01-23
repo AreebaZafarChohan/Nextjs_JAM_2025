@@ -71,13 +71,11 @@ export default {
       name: 'createdAt',
       title: 'Created At',
       type: 'datetime',
-      validation: (Rule: Rule) => Rule.required(),
     },
     {
       name: 'updatedAt',
       title: 'Updated At',
       type: 'datetime',
-      validation: (Rule: Rule) => Rule.required(),
     },
   ],
 };

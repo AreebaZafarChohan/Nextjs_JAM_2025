@@ -27,7 +27,7 @@ export default {
         type: 'string',
         title: 'Status',
         options: {
-          list: ['Pending', 'Shipped', 'Delivered'],
+          list: ['Pending', 'Shipped', 'Delivered', 'Transit'],
         },
       },
       {
@@ -41,7 +41,7 @@ export default {
         title: 'Shipment Date',
       },
       {
-        name: 'deliveryDate',
+        name: 'deliveryDate', //ETA
         type: 'datetime',
         title: 'Delivery Date',
       },

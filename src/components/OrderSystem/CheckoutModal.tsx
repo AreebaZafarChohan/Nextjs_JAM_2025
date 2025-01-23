@@ -81,7 +81,6 @@ const CheckoutModal = ({
 
       // Store user data in localStorage (or use another storage mechanism)
       localStorage.setItem("userData", JSON.stringify(userData));
-
       // Trigger the checkout process
       handleCheckout(userData);
     }
@@ -137,7 +136,7 @@ const CheckoutModal = ({
           addressTo,
           parcels,
           orderId: orderId,
-          totalAmount: 100, // Example price, use actual cart items price
+          totalAmount: 100, //cart.reduce((total, item) => total + item.price, 0) || 0
         }),
       });
 
@@ -193,7 +192,7 @@ const CheckoutModal = ({
     }
   };
 
-  /* const sendConfirmationEmail = async (email: string, data: any) => {
+   const sendConfirmationEmail = async (email: string, data: any) => {
     try {
       await fetch("/api/sendEmail", {
         method: "POST",
@@ -215,7 +214,7 @@ const CheckoutModal = ({
       console.error("Email Error:", error);
     }
   };
- */
+ 
 
   return (
     <>
@@ -402,10 +401,11 @@ const CheckoutModal = ({
                   </button>
                   <button
                     type="submit"
+                    onClick={onSubmit}
                     className="px-6 py-2 bg-darkPrimary text-white rounded-md hover:bg-navbarColor disabled:opacity-50"
-                    disabled={isLoading}
+                    
                   >
-                    {isLoading ? "Processing..." : "Submit"}
+                 Submit
                   </button>
                 </div>
               </form>
