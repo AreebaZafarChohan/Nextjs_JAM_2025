@@ -22,3 +22,5 @@ const AboutFeatureCard: React.FC<FeatureProprs> = ({ image, heading, para }) => 
 };
 
 export default AboutFeatureCard;
+
+
