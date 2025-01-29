@@ -46,6 +46,10 @@
   .hero-popular-button {
     left: 0rem;
   }
+
+  .touch-image .img {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 1260px) {
@@ -73,7 +77,11 @@
   }
 
   .hero-feature {
-    top: 4rem;
+    top: 2rem;
+  }
+
+  .listing {
+    top: 10rem;
   }
 }
 
@@ -90,8 +98,12 @@
 }
 
 @media screen and (max-width: 1199px) {
-  .popular-product {
+  .popular-product, .hero-listing {
     margin-left: 1rem;
+  }
+
+  .hero-listing {
+    padding-left: 0;
   }
 
   .hero-popular {
@@ -100,19 +112,21 @@
 }
 
 @media screen and (max-width: 1170px) {
-  .popular-product {
+  .popular-product, .hero-listing {
     margin-left: 0.5rem;
   }
 }
 
 @media screen and (max-width: 1157px) {
-  .popular-product {
-    margin-left: 5rem;
+  .popular-product{
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
   }
 
   .blackChair {
     display: none;
   }
+
 
   .hero-popular-products,
   .hero-popular-products button {
@@ -122,6 +136,12 @@
   .hero-popular-products button {
     left: 21.8rem;
   }
+
+  .listing {
+    margin-left: 0.5rem;
+    margin-right: 2rem;
+  }
+
 }
 
 @media screen and (max-width: 1130px) {
@@ -293,6 +313,15 @@
   .footer-signup {
     padding-right: 35rem;
   }
+
+  .slider {
+    top: -7rem;
+  }
+
+  .hero-listing-h4 {
+    margin-bottom: 1rem;
+  }
+
 }
 
 @media screen and (max-width: 1000px) {
@@ -349,6 +378,7 @@
   .hero-popular-button {
     padding: 0;
     left: 18rem;
+    margin-top: 0;
   }
 
   .hero-signup {
@@ -461,7 +491,7 @@
   }
 
   .hero-button {
-    left: 10rem;
+    left: 15rem;
   }
 
   .hero-signup {
@@ -479,21 +509,21 @@
   }
 
   .hero-popular {
-    gap: 6.5rem;
+    gap: 0.2rem;
   }
 
   .popular-product {
-    padding-left: 6rem;
+    padding-left: 0.5rem;
   }
 
   .hero-popular-button {
-    left: 9rem;
+    left: 15rem;
   }
 }
 
 @media screen and (max-width: 790px) {
   .hero-popular {
-    gap: 6rem;
+    gap: 0.2rem;
   }
 
   .hero-signup {
@@ -521,11 +551,19 @@
     margin-top: 0;
   }
 
+  .slider {
+    top: -12rem;
+  }
+
+  .listing {
+    margin-top: 0;
+  }
+
   .hero-listing {
-    margin-top: 10rem;
-    bottom: 10rem;
-    margin: 0 2rem;
-    padding-left: 2rem;
+    margin-top: 0rem;
+    bottom: 20rem;
+    margin: 0 1rem;
+    padding-left: 1rem;
   }
 
   .hero-prodcuts {
@@ -535,15 +573,21 @@
   .hero-button {
     margin-top: 0rem;
     left: 10rem;
+    bottom: 8rem;
   }
 
   .popular-product {
     padding-left: 2.5rem;
-    margin-top: 18rem;
+    margin-top: 4rem;
   }
 
   .hero-popular-button {
     left: 12rem;
+  }
+
+  .hero-popular-button button {
+    position: relative;
+    bottom: 4rem;
   }
 
   .hero-signup {
@@ -650,6 +694,7 @@
     left: 8rem;
   }
 
+
   .popular-product {
     padding-left: 0rem;
   }
@@ -668,7 +713,7 @@
   }
 
   .popular-product {
-    margin-top: 15rem;
+    margin-top: 0rem;
   }
 
   .hero-popular-button {
@@ -698,8 +743,13 @@
     width: 200px;
   }
 
+  .slider {
+    top: -15rem;
+  }
+
   .hero-button {
     left: 8rem;
+    
   }
 
   .product-card button {
@@ -715,6 +765,7 @@
 
   .hero-signup {
     left: 2rem;
+    top: 4rem;
   }
 }
 
@@ -911,7 +962,16 @@
   .hero-button {
     position: absolute;
     left: 6rem;
-    margin-top: 55rem;
+    margin-top: 25rem;
+  }
+
+  .slider {
+    top: 0rem;
+  }
+
+  .popular-product {
+    margin-top: 12rem;
+    margin-bottom: 4rem;
   }
 
   .product-card {
@@ -919,12 +979,12 @@
   }
 
   .product-card button {
-    width: 170px;
+    width: 200px;
     bottom: 7.7rem;
   }
 
   .hero-listing {
-    margin-top: 18rem;
+    margin-top: 16rem;
   }
 
   .hero-prodcuts {
@@ -2471,7 +2531,7 @@
   }
 
   .detail-products {
-    margin-left: 4rem;
+    margin-left: 1rem;
   }
 
   .detail-products .btn {
@@ -2481,7 +2541,7 @@
 
 @media screen and (max-width: 767px) {
   .detail-div {
-    padding: 2rem 4rem;
+    padding: 2rem 1rem;
   }
 
   .quantity-btn {

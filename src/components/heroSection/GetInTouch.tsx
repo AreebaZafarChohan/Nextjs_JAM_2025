@@ -21,7 +21,7 @@ const GetInTouch = () => {
         </div>
       </div>
 
-      <div className="md:relative lg:bottom-[6rem] touch-image">
+      <div className="md:relative w-full lg:bottom-[6rem] touch-image">
         <Image
           src="/images/SofaWithVase.png"
           alt="Sofa and Vase Image"

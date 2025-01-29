@@ -32,3 +32,11 @@ export interface FeatureProprs {
     heading: string;
     para: string;
 }
+
+export interface CartItem {
+    name: string;
+    id: string;
+    image: string;
+    quantity: number;
+    price: string | number;
+}

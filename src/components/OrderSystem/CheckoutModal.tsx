@@ -1,14 +1,28 @@
 "use client";
 import { useState } from "react";
+import {CartItem } from "../../../types/components";
+import { createOrUpdateUser } from "@/actions/createUser";
+import { createOrder } from "@/actions/createOrder";
+import { createShipment } from "@/actions/createShipment";
+import emailjs from "@emailjs/browser";
+import toast from "react-hot-toast";
 
 const CheckoutModal = ({
   isOpen,
   closeModal,
   onSubmit,
+  orderSuccess,
+  setCartItems,
+  calculateSubtotal,
+  cartItems,
 }: {
-  isOpen: boolean;
+  isOpen: any;
   closeModal: () => void;
   onSubmit: (formData: any) => void;
+  orderSuccess: any;
+  setCartItems: any | CartItem;
+  calculateSubtotal: number | any;
+  cartItems: CartItem | any;
 }) => {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -28,7 +42,8 @@ const CheckoutModal = ({
   const [trackingNumber, setTrackingNumber] = useState("");
   const [trackingData, setTrackingData] = useState<any | null>(null);
   const [isTracking, setIsTracking] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // New state for loading
+  const [isLoading, setIsLoading] = useState(false);
+  const [showShipmentDetails, setShowShipmentDetails] = useState(false); // State to control shipment details visibility
 
   const countries = [
     { code: "+92", name: "Pakistan", flag: "🇵🇰" },
@@ -74,35 +89,205 @@ const CheckoutModal = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      const userData = { ...formData };
-
-      // Store user data in localStorage (or use another storage mechanism)
-      localStorage.setItem("userData", JSON.stringify(userData));
-      // Trigger the checkout process
-      handleCheckout(userData);
-    }
-  };
-
   function generateOrderId(): string {
     const randomDigits = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit number
     return `ORDER${randomDigits}`;
   }
 
+  function generateUserId(): string {
+    const randomDigits = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit number
+    return `User${randomDigits}`;
+  }
+
   const orderId = generateOrderId();
+  const userId = generateUserId();
+  
+
+  const handleSubmit = (e: React.FormEvent) => {
+    const isConfirmed = window.confirm("Are you sure you want to place this order?");
+    isConfirmed;
+    e.preventDefault();
+    if (validateForm()) {
+      const userData = { ...formData }; // use the state data directly
+  
+      // Trigger the checkout process
+      handleCheckout(userData);
+      
+  
+      const handleUserSubmit = async () => {
+        // Collect form data from state directly
+        const userData = {
+          userId: userId,
+          name: formData.fullName,  // Get values from formData state
+          email: formData.email,
+          phoneNumber: formData.phoneNumber,
+          countryCode: formData.countryCode,
+          address: formData.address,
+          city: formData.city,
+          zipCode: formData.zipCode,
+          state: formData.state,
+          country: formData.country,
+          order: cartItems.map((item: CartItem) => ({
+            orderId: orderId,
+            productId: item.id,
+            productName: item.name,
+            productPrice: item.price,
+            quantity: item.quantity,
+          })),
+        };
+  
+        console.log("User Data", userData);
+  
+        // Ensure all required fields are not null
+        if (!userData.name || !userData.email || !userData.phoneNumber || !userData.address) {
+          console.error("All form fields are required.");
+          return;
+        }
+  
+        try {
+          // Call the API function
+          const result = await createOrUpdateUser(userData);
+          console.log("User created successfully:", result);
+        } catch (error) {
+          console.error("Failed to create user:", error);
+        }
+      };
+  
+      handleUserSubmit(); 
+
+
+      const currentDate = new Date();
+const year = currentDate.getFullYear();
+const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so we add 1
+const day = String(currentDate.getDate()).padStart(2, '0');
+let hours = currentDate.getHours();
+const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
+// Determine AM or PM
+const amPm = hours >= 12 ? 'PM' : 'AM';
+
+// Convert hours to 12-hour format
+hours = hours % 12 || 12; // If hours is 0 (midnight), set it to 12
+
+const formattedDateTime = `${year}-${month}-${day} ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${amPm}`;
+
+      const handleOrderSubmit = async () => {
+        const OrderData = {
+          orderId: orderId,
+          userId: userId,
+          orderDate: formattedDateTime,
+          orderData: cartItems.map((item: CartItem) => ({
+            productId: item.id,
+            productName: item.name,
+            originalPrice: item.price,
+            quantity: item.quantity,
+            totalAmount: (typeof item.price === 'string' ? parseFloat(item.price) : item.price) * item.quantity,
+            status: "Delivered",
+          })),
+        };
+  
+        console.log("Order Data", OrderData);
+  
+        try {
+          // Call the API function
+          const result = await createOrder(OrderData);
+          console.log("Order created successfully:", result);
+        } catch (error) {
+          console.error("Failed to create order:", error);
+        }
+      };
+  
+      handleOrderSubmit();
+
+
+      const handleSendEmail = async () => {
+        try {
+          // Check if productData is available for the current order
+          const orderItems = cartItems?.length
+            ? cartItems
+                .map(
+                  (item: CartItem) =>
+                    `${item.name} (x${item.quantity})\nSKU: ${item.id || "N/A"}\nProduct Link: https://marketplacefurniture715.vercel.app/products/${item.id}`
+                )
+                .join("\n\n")
+            : "No items found.";
+      
+          // Customer email parameters
+          const customerEmailParams = {
+            to_email: userData.email,
+            to_name: userData.fullName || "Customer",
+            item_name: orderItems,
+            total_price: `£${calculateSubtotal().toFixed(2)}`,
+            recipient_name: userData.fullName || "N/A",
+            shipping_address: userData.address || "N/A",
+            city: userData.city || "N/A",
+            postal_code: userData.zipCode || "N/A",
+            contact_number: userData.phoneNumber || "N/A",
+            support_email: "areebazafar715@gmail.com",
+            support_phone: "+923495678943",
+            payment_method: "COD",
+            company_name: "Avion Furniture",
+          };
+      
+          // Store email parameters (sent to admin)
+          const storeEmailParams = {
+            ...customerEmailParams,
+            customer_email: userData.email,
+            to_email: "areebazafar715@gmail.com",
+          };
+      
+          // Sending email to customer
+          await emailjs.send(
+            process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+            process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_CUSTOMER!,
+            customerEmailParams,
+            process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+          );
+      
+          // Sending email to store admin
+          await emailjs.send(
+            process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+            process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN!,
+            storeEmailParams,
+            process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+          );
+      
+          toast.success("Emails sent successfully!");
+        } catch (error) {
+          console.error("Error sending email:", error);
+          toast.error("An error occurred while sending the email.");
+        }
+      };
+      
+      // Call function
+      handleSendEmail();
+  
+      localStorage.removeItem("cart");
+      setCartItems([]);
+    }
+  };
 
   // Shipment API
   const handleCheckout = async (userData: any) => {
+    // Retrieve cart from localStorage
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    // If cart is empty, handle accordingly
+    if (cart.length === 0) {
+      setCheckoutStatus("Your cart is empty. Please add items to your cart.");
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true); // Set loading to true while waiting for response
     const addressFrom = {
-      name: "E-commerce Store",
-      street1: "123 Store Lane",
-      city: "San Francisco",
-      state: "CA",
+      name: "Avion Furniture",
+      street1: "123 32 A Korangi",
+      city: "Karachi",
+      state: "Sindh",
       zip: "94107",
-      country: "US",
+      country: "Pakistan",
     };
 
     const addressTo = {
@@ -125,6 +310,8 @@ const CheckoutModal = ({
       },
     ];
 
+    let amount = `£${calculateSubtotal().toFixed(2)}`;
+    setIsLoading(true);
     try {
       const response = await fetch("/api/shippoOrder", {
         method: "POST",
@@ -136,7 +323,7 @@ const CheckoutModal = ({
           addressTo,
           parcels,
           orderId: orderId,
-          totalAmount: 100, //cart.reduce((total, item) => total + item.price, 0) || 0
+          totalAmount: amount,
         }),
       });
 
@@ -148,7 +335,10 @@ const CheckoutModal = ({
           eta: data.eta,
           trackingNumber: data.trackingNumber,
         });
-        setCheckoutStatus("Order placed successfully!");
+        setShowShipmentDetails(true);
+        setCheckoutStatus(
+          "Your order has been successfully placed. We will notify you once it's shipped!"
+        );
       } else {
         setCheckoutStatus("Failed to place order. Please try again.");
       }
@@ -165,11 +355,12 @@ const CheckoutModal = ({
       alert("Please enter a tracking number");
       return;
     }
-
+  
     setIsTracking(true);
     try {
       const carrier = "shippo";
       const orderId = shipmentDetails?.orderId;
+  
       const response = await fetch("/api/liveTracking", {
         method: "POST",
         headers: {
@@ -177,22 +368,76 @@ const CheckoutModal = ({
         },
         body: JSON.stringify({ trackingNumber, carrier, orderId }),
       });
-
+  
       const data = await response.json();
+      console.log("Tracking API response:", data);
+  
       if (response.ok && data?.trackingDetails) {
         setTrackingData(data);
+  
+        const currentDate = new Date();
+        const formattedDateTime = currentDate.toLocaleString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+  
+        const etaDate = new Date(data.trackingDetails.eta);
+        const etaFormattedDate = etaDate.toLocaleString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+  
+        const status =
+          data?.trackingDetails?.tracking_history?.find(
+            (historyItem: any) => historyItem.status === "TRANSIT"
+          )?.status || "Pending";
+  
+        const shipmentData = {
+          orderId,
+          userName: formData.fullName,
+          userEmail: formData.email,
+          userPhone: formData.phoneNumber,
+          countryCode: formData.countryCode,
+          shippingAddress: `${formData.address}, ${formData.state}, ${formData.city}, ${formData.country}`,
+          status,
+          trackingNumber: shipmentDetails.trackingNumber,
+          shipmentDate: formattedDateTime,
+          deliveryDate: etaFormattedDate,
+          carrier,
+          shipmentCharges: "Free",
+          totalAmount: shipmentDetails.totalAmount,
+        };
+  
+        console.log("Shipment Data:", shipmentData);
+  
+        try {
+          const result = await createShipment(shipmentData);
+          console.log("Shipment created successfully:", result);
+        } catch (shipmentError) {
+          console.error("Failed to create shipment:", shipmentError);
+        }
       } else {
+        console.error("Tracking details missing in response.");
         setTrackingData(null);
       }
     } catch (error) {
-      console.log("Error fetching tracking status:", error);
+      console.error("Error fetching tracking status:", error);
       setTrackingData(null);
     } finally {
       setIsTracking(false);
     }
   };
 
-   const sendConfirmationEmail = async (email: string, data: any) => {
+
+  const sendConfirmationEmail = async (email: string, data: any) => {
     try {
       await fetch("/api/sendEmail", {
         method: "POST",
@@ -202,25 +447,24 @@ const CheckoutModal = ({
         body: JSON.stringify({
           to: email,
           subject: "Your Order Confirmation",
-          text: 
-            `Order ID: ${data.orderId}
+          text: `Order ID: ${data.orderId}
             Total Amount: ${data.totalAmount}
             ETA: ${data.eta}
-            Tracking Number: ${data.trackingNumber}`
-          ,
+            Tracking Number: ${data.trackingNumber}`,
         }),
       });
     } catch (error) {
       console.error("Email Error:", error);
     }
   };
- 
+
+  const userFormData = { ...formData };
 
   return (
     <>
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          {!shipmentDetails ? (
+          {!shipmentDetails && orderSuccess ? (
             <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 p-6 max-h-[90vh] overflow-y-auto">
               <h2 className="text-2xl font-bold mb-4">Enter Your Details</h2>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -401,12 +645,18 @@ const CheckoutModal = ({
                   </button>
                   <button
                     type="submit"
-                    onClick={onSubmit}
+                    onClick={handleSubmit}
                     className="px-6 py-2 bg-darkPrimary text-white rounded-md hover:bg-navbarColor disabled:opacity-50"
-                    
+                    disabled={isLoading}
                   >
-                 Submit
+                    Submit
                   </button>
+
+                  {isLoading && (
+                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                      <div className="w-12 h-12 border-4 border-gray-300 border-t-darkPrimary rounded-full animate-spin"></div>
+                    </div>
+                  )}
                 </div>
               </form>
             </div>
@@ -414,16 +664,31 @@ const CheckoutModal = ({
             <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 p-6 max-h-[90vh] overflow-y-auto">
               {/* Show shipment details */}
               {checkoutStatus && (
-                <p className="text-blue-600 mt-4">{checkoutStatus}</p>
+                <div>
+                  <p className="text-darkPrimary text-xl font-clash mt-4 p-2">
+                    {checkoutStatus}
+                  </p>
+                  <p className="text-xl text-yellow-400 bg-darkPrimary p-4 outline-double  rounded-lg font-satoshi">
+                    Thank you for your purchase! We hope you enjoy your items.
+                    Don&apos;t forget to come back for more unique finds next
+                    time!
+                  </p>
+                </div>
               )}
-              {isLoading && <p className="text-gray-500">Loading...</p>}
+              {isLoading && (
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                  <div className="w-12 h-12 border-4 border-gray-300 border-t-darkPrimary rounded-full animate-spin"></div>
+                </div>
+              )}
 
               {/* Shipment Details */}
-              {shipmentDetails && (
-                <div className="mt-8 bg-green-100 p-6 rounded-lg">
-                  <h3 className="text-xl font-bold">Shipment Details</h3>
+              {showShipmentDetails && shipmentDetails && (
+                <div className="mt-8 bg-yellow-100 p-6 rounded-lg">
+                  <h3 className="text-xl font-bold border-b border-darkPrimary py-1 mb-2">
+                    Shipment Details
+                  </h3>
                   <p>Order ID: {shipmentDetails.orderId}</p>
-                  <p>Total Amount: ${shipmentDetails.totalAmount}</p>
+                  <p>Total Amount: {shipmentDetails.totalAmount}</p>
                   <p>ETA: {shipmentDetails.eta}</p>
                   <p>
                     Tracking Number:{" "}
@@ -449,37 +714,38 @@ const CheckoutModal = ({
                   />
                   <button
                     onClick={handleTrackShipment}
-                    className="bg-blue-500 text-white p-2 rounded-md"
+                    className="bg-darkPrimary border border-yellow-500 text-lightGray p-2 rounded-md"
+                    disabled={isTracking}
                   >
                     Track
                   </button>
+                  {isTracking && (
+                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                      <div className="w-12 h-12 border-4 border-darkPrimary border-t-yellow-500 rounded-full animate-spin"></div>
+                    </div>
+                  )}
                 </div>
 
-                {isTracking && <p className="text-gray-500">Loading...</p>}
                 {trackingData && trackingData.trackingDetails && (
                   <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-                    <h2 className="text-lg font-bold mb-4">
+                    <h2 className="text-xl border-b-2 border-darkPrimary p-2 font-bold mb-4">
                       Shipment Tracking Details
                     </h2>
-                    <p>
-                      <strong>Tracking Number:</strong>{" "}
-                      {trackingData.trackingDetails.tracking_number}
-                    </p>
                     <p>
                       <strong>Carrier:</strong>{" "}
                       {trackingData.trackingDetails.carrier}
                     </p>
                     <p>
                       <strong>ETA:</strong>{" "}
-                      {trackingData.trackingDetails.eta || "N/A"}
+                      {trackingData.trackingDetails.eta|| "N/A"}
                     </p>
                     <p>
                       <strong>Origin:</strong>{" "}
-                      {`${trackingData.trackingDetails.address_from.city}, ${trackingData.trackingDetails.address_from.state}, ${trackingData.trackingDetails.address_from.country}`}
+                      {`Korangi 32 A | Karachi, Sindh - Pakistan`}
                     </p>
                     <p>
                       <strong>Destination:</strong>{" "}
-                      {`${trackingData.trackingDetails.address_to.city}, ${trackingData.trackingDetails.address_to.state}, ${trackingData.trackingDetails.address_to.country}`}
+                      {`${userFormData.address}, ${userFormData.state}, ${userFormData.city}, ${userFormData.country}`}
                     </p>
                     <h3 className="text-lg font-bold mt-4">Tracking History</h3>
                     {trackingData.trackingDetails.tracking_history?.filter(
@@ -514,7 +780,9 @@ const CheckoutModal = ({
                           ))}
                       </ul>
                     ) : (
-                      <p>No tracking history with status &apos;TRANSIT&apos;.</p>
+                      <p>
+                        No tracking history with status &apos;TRANSIT&apos;.
+                      </p>
                     )}
                   </div>
                 )}

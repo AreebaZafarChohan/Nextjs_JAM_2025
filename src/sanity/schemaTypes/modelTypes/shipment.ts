@@ -7,19 +7,32 @@ export default {
     fields: [
       {
         name: 'orderId',
-        type: 'reference',
+        type: 'string',
         title: 'Order ID',
-        to: [{ type: 'user' }], // Reference to the 'user' schema for the Order ID
       },
       {
-        name: 'userId',
-        type: 'reference',
-        title: 'User ID',
-        to: [{ type: 'user' }], // Reference to the 'user' schema for User ID
+        name: 'userName',
+        type: 'string',
+        title: 'User Name',
+      },
+      {
+        name: 'userEmail',
+        type: 'string',
+        title: 'User Email',
+      },
+      {
+        name: 'countryCode',
+        title: 'Country Code',
+        type: 'string',
+      },
+      {
+        name: 'userPhone',
+        type: 'number',
+        title: 'User Phone',
       },
       {
         name: 'shippingAddress',
-        type: 'text',
+        type: 'string',
         title: 'Shipping Address',
       },
       {

@@ -2,6 +2,7 @@
 import { client } from "@/sanity/lib/client";
 import Image from "next/image";
 import Link from "next/link";
+import { UserButton } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
@@ -221,6 +222,11 @@ const Header = () => {
               <FaShoppingCart />
             </div>
           </Link>
+
+          { /* User Account by Clerk */}
+          <div className="stick  right-[16rem] flex items-center justify-center w-6 h-6 rounded-full border border-transparent hover:bg-lightGray">
+              <UserButton />
+            </div>
         </div>
       </div>
     </nav>

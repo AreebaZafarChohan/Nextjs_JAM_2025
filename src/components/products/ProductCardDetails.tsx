@@ -8,6 +8,11 @@ import SignUp from "../heroSection/SignUp";
 import { CardProps } from "../../../types/components";
 import { client } from "@/sanity/lib/client";
 import { useRouter } from "next/navigation";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/autoplay";
+
+import { Autoplay} from "swiper/modules";
 
 const ProductCardDetails = () => {
   const params = useParams(); // Getting the route parameter
@@ -282,20 +287,57 @@ const ProductCardDetails = () => {
       )}
 
       <div className="w-full md:mt-[2rem] h-[811px] flex flex-col md:mx-8 lg:mx-0 xl:mx-7 detail-products">
-        <h5 className="mt-[10rem] lg:mt-[10rem] md:mt-[15rem] leading-[24.6px] text-darkPrimary font-clash font-normal text-xl md:text-2xl lg:text-3xl">
+        <h5 className="mt-[10rem] lg:mt-[10rem] md:mt-[15rem] leading-[24.6px] text-darkPrimary font-clash font-normal text-xl md:text-2xl lg:text-3xl"> 
           You might also like
         </h5>
-        <div className="relative h-[625px] grid grid-cols-2 lg:grid-cols-4 gap-0 gap-y-[8rem] lg:gap-0 mt-[2rem]  detail-product-card ">
-          {productData?.length ? (
-            productData.map((product) => (
-              <div key={product.id}>
-                <ProductCard productData={product} />
-              </div>
-            ))
-          ) : (
-            <p>Loading products...</p>
-          )}
-        </div>
+        <div className="detail-product-card md:block lg:block xl:block sm:block hidden">
+  {productData?.length ? (
+    <Swiper
+      spaceBetween={16} // Spacing between slides
+      slidesPerView={3} // Default slides for small screens
+      modules={[Autoplay]} // Include Autoplay in modules
+      autoplay={{
+        delay: 1000, // Delay between slides in milliseconds
+        disableOnInteraction: false, // Allow autoplay even after interaction
+      }}
+      loop={true} // Enable looping
+    >
+      {productData.map((product) => (
+        <SwiperSlide key={product.id}>
+          {/* Render ProductCard for each product */}
+          <ProductCard productData={product} />
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  ) : (
+    <p className="text-center text-3xl text-darkPrimary font-bold font-clash">Loading products...</p>
+  )}
+</div>
+
+<div className="detail-product-card md:hidden lg:hidden xl:hidden sm:hidden block">
+  {productData?.length ? (
+    <Swiper
+      spaceBetween={16} // Spacing between slides
+      slidesPerView={2} // Default slides for small screens
+     
+      modules={[Autoplay]} // Include Autoplay in modules
+      autoplay={{
+        delay: 1000, // Delay between slides in milliseconds
+        disableOnInteraction: false, // Allow autoplay even after interaction
+      }}
+      loop={true} // Enable looping
+    >
+      {productData.map((product) => (
+        <SwiperSlide key={product.id}>
+          {/* Render ProductCard for each product */}
+          <ProductCard productData={product} />
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  ) : (
+    <p className="text-center text-3xl text-darkPrimary font-bold font-clash">Loading products...</p>
+  )}
+</div>
 
         <button className="md:w-[250px] w-full md:relative lg:left-[34rem] lg:-bottom-[2rem] md:-bottom-[18rem] md:left-[16rem] py-[16px] px-[32px] bg-lightGray bg-opacity-[15%] leading-6 text-darkPrimary font-satoshi font-normal hover:bg-darkPrimary hover:text-white transition-all duration-300 ease-in-out mt-[8rem] btn">
           View collection

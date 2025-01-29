@@ -93,7 +93,13 @@ const ProductsComponent = () => {
   useEffect(() => {
     const debounce = setTimeout(() => fetchProducts(), 300);
     return () => clearTimeout(debounce);
-  }, [selectedCategory, selectedMaterial, selectedProductType, selectedColor, selectedSort]);
+  }, [
+    selectedCategory,
+    selectedMaterial,
+    selectedProductType,
+    selectedColor,
+    selectedSort,
+  ]);
 
   // Updated Category Filter Logic
   const handleCategoryClick = (category: string) => {
@@ -122,22 +128,37 @@ const ProductsComponent = () => {
         <div className="relative">
           <button
             className="w-[143px] h-[56px] flex items-center justify-center px-4 py-2 shadow-sm bg-lightGray hover:bg-darkPrimary hover:text-white transition text-darkBlue"
-            onClick={toggleFilterMenu}
+            onClick={toggleCategoryMenu}
           >
-            <span className="font-satoshi font-normal leading-6">Filter</span>
+            <span className="font-satoshi font-normal leading-6">Category</span>
             <IoMdArrowDropdown className="ml-2 " />
           </button>
-          {isFilterOpen && (
+          {isCategoryOpen && (
             <div className="absolute top-12 left-0 w-40 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
               <ul className="text-darkBlue text-sm">
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Price
+                <li
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => handleCategoryClick("Sofas")}
+                >
+                  Sofas
                 </li>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Category
+                <li
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => handleCategoryClick("Chairs")}
+                >
+                  Chairs
                 </li>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Rating
+                <li
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => handleCategoryClick("Lamps")}
+                >
+                  Lamps
+                </li>
+                <li
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => handleCategoryClick("Vases")}
+                >
+                  Vases
                 </li>
               </ul>
             </div>
@@ -495,7 +516,7 @@ const ProductsComponent = () => {
             <ProductCard key={product.id} productData={product} />
           ))
         ) : (
-          <p className="col-span-4 text-center text-darkPrimary">
+          <p className="col-span-4 text-center text-2xl font-bold text-darkPrimary">
             No products found.
           </p>
         )}

@@ -37,6 +37,36 @@ export default {
       validation: (Rule: Rule) => Rule.required(),
     },
     {
+      name: 'zipCode',
+      title: 'Zip Code',
+      type: 'string',
+      validation: (Rule: Rule) => Rule.required(),
+    },
+    {
+      name: 'country',
+      title: 'Country',
+      type: 'string',
+      validation: (Rule: Rule) => Rule.required(),
+    },
+    {
+      name: 'countryCode',
+      title: 'Country Code',
+      type: 'string',
+      validation: (Rule: Rule) => Rule.required(),
+    },
+    {
+      name: 'city',
+      title: 'City',
+      type: 'string',
+      validation: (Rule: Rule) => Rule.required(),
+    },
+    {
+      name: 'state',
+      title: 'State',
+      type: 'string',
+      validation: (Rule: Rule) => Rule.required(),
+    },
+    {
       name: 'orders',
       title: 'Orders',
       type: 'array',
@@ -53,9 +83,17 @@ export default {
             {
               name: 'productId',
               title: 'Product ID',
-              type: 'reference',
-              to: [{ type: 'product' }], // Reference to the product schema for product ID
-              validation: (Rule: Rule) => Rule.required(),
+              type: 'string',
+            },
+            {
+              name: 'productName',
+              title: 'Product Name',
+              type: 'string',
+            },
+            {
+              name: 'productPrice',
+              title: 'Product Price',
+              type: 'number',
             },
             {
               name: 'quantity',

@@ -80,7 +80,7 @@ const ProductCard: React.FC<{ productData: CardProps }> = ({ productData }) => {
   return (
     <div
       key={productData.id}
-      className="relative flex flex-col gap-4 bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow "
+      className="relative flex flex-col gap-4 bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow productCard"
     >
       {/* Product Image */}
       <Image

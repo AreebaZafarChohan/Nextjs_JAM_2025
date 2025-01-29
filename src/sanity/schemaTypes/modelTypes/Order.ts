@@ -13,16 +13,15 @@ export default {
       validation: (Rule: Rule) => Rule.required(),
     },
     {
-      name: 'productId',
-      title: 'Product ID',
-      type: 'reference',
-      to: [{ type: 'product' }], // Reference to the product schema
-    },
-    {
       name: 'userId',
       title: 'User ID',
-      type: 'reference',
-      to: [{ type: 'user' }], // Reference to the user schema
+      type: 'string',
+    },
+    {
+      name: 'orderDate',
+      title: 'Order Date',
+      type: 'datetime',
+      validation: (Rule: Rule) => Rule.required(),
     },
     {
       name: 'orderData',
@@ -33,10 +32,14 @@ export default {
           type: 'object',
           fields: [
             {
-              name: 'orderDate',
-              title: 'Order Date',
-              type: 'datetime',
-              validation: (Rule: Rule) => Rule.required(),
+              name: 'productId',
+              title: 'Product ID',
+              type: 'string',
+            },
+            {
+              name: 'productName',
+              title: 'Product Name',
+              type: 'string',
             },
             {
               name: 'quantity',
@@ -59,8 +62,7 @@ export default {
             {
               name: 'originalPrice',
               title: 'Original Price',
-              type: 'reference',
-      to: [{ type: 'product' }], // Reference to the product schema
+              type: 'number',
             },
           ],
         },
