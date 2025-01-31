@@ -131,7 +131,7 @@ const Header = () => {
           {/* Display filtered products */}
           <div className="my-4">
             {filteredProducts.length > 0 ? (
-              <ul className="bg-white border border-gray-200 rounded-md shadow-md grid grid-cols-3">
+              <ul className="bg-white border border-gray-200 rounded-md shadow-md grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
                 {filteredProducts.map((product) => (
                   <li
                   key={product.id}
@@ -146,8 +146,8 @@ const Header = () => {
                       className="rounded-md"
                     />
                     <div>
-                      <p className="font-medium text-darkBlue">{product.name}</p>
-                      <p className="text-gray-600">${product.price}</p>
+                      <p className="font-medium text-darkBlue sm:text-base text-xs">{product.name}</p>
+                      <p className="text-gray-600 sm:text-base text-xs">${product.price}</p>
                     </div>
                   </div>
                 

@@ -13,21 +13,6 @@ const ProductCard: React.FC<{ productData: CardProps }> = ({ productData }) => {
     return null; // Safeguard in case productData is undefined
   }
 
-  // Function to update stock in Sanity
-  const updateStock = async (productId: string, decrementBy: number) => {
-    try {
-      const updatedProduct = await client
-        .patch(productId) // Specify the product to update
-        .dec({ stock: decrementBy }) // Decrement stock by the specified quantity
-        .commit(); // Commit the changes
-
-      console.log('Stock updated:', updatedProduct);
-      return updatedProduct;
-    } catch (error) {
-      console.error('Error updating stock:', error);
-    }
-  };
-
   const handleAddToCart = async () => {
     const productId = productData.id ?? "default-id"; // Provide a fallback ID if undefined
   
@@ -47,12 +32,6 @@ const ProductCard: React.FC<{ productData: CardProps }> = ({ productData }) => {
   
     addItemToCart(newItem);
   
-    // Update stock in Sanity
-    const updatedProduct = await updateStock(productId, 1);
-  
-    if (updatedProduct) {
-      productData.stock = updatedProduct.stock; // Update the local state (if applicable)
-    }
   };
 
   const addItemToCart = (newItem: any) => {

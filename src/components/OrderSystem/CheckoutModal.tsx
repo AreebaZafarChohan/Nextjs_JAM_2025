@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useInsertionEffect, useState } from "react";
 import {CartItem } from "../../../types/components";
 import { createOrUpdateUser } from "@/actions/createUser";
 import { createOrder } from "@/actions/createOrder";
@@ -53,6 +53,10 @@ const CheckoutModal = ({
     { code: "+61", name: "Australia", flag: "🇦🇺" },
   ];
 
+  useEffect(() => {
+    emailjs.init(`${process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY}`);
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -103,9 +107,10 @@ const CheckoutModal = ({
   const userId = generateUserId();
   
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     const isConfirmed = window.confirm("Are you sure you want to place this order?");
-    isConfirmed;
+    if (!isConfirmed) return;
+    
     e.preventDefault();
     if (validateForm()) {
       const userData = { ...formData }; // use the state data directly
@@ -153,7 +158,7 @@ const CheckoutModal = ({
         }
       };
   
-      handleUserSubmit(); 
+      await handleUserSubmit(); 
 
 
       const currentDate = new Date();
@@ -198,8 +203,7 @@ const formattedDateTime = `${year}-${month}-${day} ${String(hours).padStart(2, '
         }
       };
   
-      handleOrderSubmit();
-
+      await handleOrderSubmit();
 
       const handleSendEmail = async () => {
         try {
@@ -215,7 +219,7 @@ const formattedDateTime = `${year}-${month}-${day} ${String(hours).padStart(2, '
       
           // Customer email parameters
           const customerEmailParams = {
-            to_email: userData.email,
+            to_email: userData.email || "areebazafar715@gmail.com",
             to_name: userData.fullName || "Customer",
             item_name: orderItems,
             total_price: `£${calculateSubtotal().toFixed(2)}`,
@@ -229,6 +233,11 @@ const formattedDateTime = `${year}-${month}-${day} ${String(hours).padStart(2, '
             payment_method: "COD",
             company_name: "Avion Furniture",
           };
+
+          if (!formData.email) {
+            console.log("Email Error:", customerEmailParams);
+            return;  // Don't send the email if email is empty
+          }
       
           // Store email parameters (sent to admin)
           const storeEmailParams = {
@@ -236,21 +245,12 @@ const formattedDateTime = `${year}-${month}-${day} ${String(hours).padStart(2, '
             customer_email: userData.email,
             to_email: "areebazafar715@gmail.com",
           };
-      
+    
           // Sending email to customer
           await emailjs.send(
             process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
             process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_CUSTOMER!,
             customerEmailParams,
-            process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
-          );
-      
-          // Sending email to store admin
-          await emailjs.send(
-            process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-            process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN!,
-            storeEmailParams,
-            process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
           );
       
           toast.success("Emails sent successfully!");
@@ -261,7 +261,7 @@ const formattedDateTime = `${year}-${month}-${day} ${String(hours).padStart(2, '
       };
       
       // Call function
-      handleSendEmail();
+      await handleSendEmail();
   
       localStorage.removeItem("cart");
       setCartItems([]);
@@ -433,28 +433,6 @@ const formattedDateTime = `${year}-${month}-${day} ${String(hours).padStart(2, '
       setTrackingData(null);
     } finally {
       setIsTracking(false);
-    }
-  };
-
-
-  const sendConfirmationEmail = async (email: string, data: any) => {
-    try {
-      await fetch("/api/sendEmail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          to: email,
-          subject: "Your Order Confirmation",
-          text: `Order ID: ${data.orderId}
-            Total Amount: ${data.totalAmount}
-            ETA: ${data.eta}
-            Tracking Number: ${data.trackingNumber}`,
-        }),
-      });
-    } catch (error) {
-      console.error("Email Error:", error);
     }
   };
 
