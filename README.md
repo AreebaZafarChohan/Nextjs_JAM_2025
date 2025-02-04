@@ -2,7 +2,7 @@
 
 This e-commerce project was initially designed in Figma during a previous hackathon, and now it has been fully developed and made functional. The goal was to create a responsive furniture marketplace in under a week. The project was developed using Next.js, Sanity CMS for data management, and features various components such as product listings, cart functionality, checkout process, and an admin panel.
 
-🌐 **Project Link**: [Marketplace Furniture](https://marketplacefurniture715.vercel.app/)
+🌐 **Project Link**: [Marketplace Furniture](https://avionfurnituremarketplace.vercel.app/)
 
 ## Business Goal and Target Audience 🎯
 
