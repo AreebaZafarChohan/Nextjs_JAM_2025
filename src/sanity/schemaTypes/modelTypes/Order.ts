@@ -68,5 +68,20 @@ export default {
         },
       ],
     },
+    {
+      name: 'userPassword',
+      title: 'User Password',
+      type: 'string',
+    },
+    {
+      name: 'createdAt',
+      title: 'Created At',
+      type: 'datetime',
+    },
+    {
+      name: 'updatedAt',
+      title: 'Updated At',
+      type: 'datetime',
+    },
   ],
 };

@@ -6,6 +6,7 @@ import { createOrder } from "@/actions/createOrder";
 import { createShipment } from "@/actions/createShipment";
 import emailjs from "@emailjs/browser";
 import toast from "react-hot-toast";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const CheckoutModal = ({
   isOpen,
@@ -34,6 +35,8 @@ const CheckoutModal = ({
     zipCode: "",
     state: "",
     country: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -44,6 +47,8 @@ const CheckoutModal = ({
   const [isTracking, setIsTracking] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showShipmentDetails, setShowShipmentDetails] = useState(false); // State to control shipment details visibility
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const countries = [
     { code: "+92", name: "Pakistan", flag: "🇵🇰" },
@@ -125,6 +130,7 @@ const CheckoutModal = ({
           userId: userId,
           name: formData.fullName,  // Get values from formData state
           email: formData.email,
+          password: formData.password,
           phoneNumber: formData.phoneNumber,
           countryCode: formData.countryCode,
           address: formData.address,
@@ -161,27 +167,12 @@ const CheckoutModal = ({
       await handleUserSubmit(); 
 
 
-      const currentDate = new Date();
-const year = currentDate.getFullYear();
-const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so we add 1
-const day = String(currentDate.getDate()).padStart(2, '0');
-let hours = currentDate.getHours();
-const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-const seconds = String(currentDate.getSeconds()).padStart(2, '0');
-
-// Determine AM or PM
-const amPm = hours >= 12 ? 'PM' : 'AM';
-
-// Convert hours to 12-hour format
-hours = hours % 12 || 12; // If hours is 0 (midnight), set it to 12
-
-const formattedDateTime = `${year}-${month}-${day} ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${amPm}`;
-
       const handleOrderSubmit = async () => {
         const OrderData = {
           orderId: orderId,
           userId: userId,
-          orderDate: formattedDateTime,
+          userPassword: formData.password,
+          orderDate: new Date().toISOString(),
           orderData: cartItems.map((item: CartItem) => ({
             productId: item.id,
             productName: item.name,
@@ -207,19 +198,21 @@ const formattedDateTime = `${year}-${month}-${day} ${String(hours).padStart(2, '
 
       const handleSendEmail = async () => {
         try {
-          // Check if productData is available for the current order
+          const recipientEmail = userData.email?.trim();
+          if (!recipientEmail) {
+            console.log("Error: Customer email is missing.");
+            toast.error("Customer email is required.");
+            return;  // Don't send email if email is empty
+          }
+      
           const orderItems = cartItems?.length
             ? cartItems
-                .map(
-                  (item: CartItem) =>
-                    `${item.name} (x${item.quantity})\nSKU: ${item.id || "N/A"}\nProduct Link: https://marketplacefurniture715.vercel.app/products/${item.id}`
-                )
+                .map((item: CartItem) => `${item.name} (x${item.quantity})\nSKU: ${item.id || "N/A"}\nProduct Link: https://yourwebsite.com/products/${item.id}`)
                 .join("\n\n")
             : "No items found.";
       
-          // Customer email parameters
           const customerEmailParams = {
-            to_email: userData.email || "areebazafar715@gmail.com",
+            to_email: recipientEmail, // Ensure valid email is set
             to_name: userData.fullName || "Customer",
             item_name: orderItems,
             total_price: `£${calculateSubtotal().toFixed(2)}`,
@@ -233,27 +226,17 @@ const formattedDateTime = `${year}-${month}-${day} ${String(hours).padStart(2, '
             payment_method: "COD",
             company_name: "Avion Furniture",
           };
-
-          if (!formData.email) {
-            console.log("Email Error:", customerEmailParams);
-            return;  // Don't send the email if email is empty
-          }
       
-          // Store email parameters (sent to admin)
-          const storeEmailParams = {
-            ...customerEmailParams,
-            customer_email: userData.email,
-            to_email: "areebazafar715@gmail.com",
-          };
-    
-          // Sending email to customer
+          console.log("Sending email to:", recipientEmail);
+      
+          // Send email to customer
           await emailjs.send(
             process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
             process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_CUSTOMER!,
-            customerEmailParams,
+            customerEmailParams
           );
       
-          toast.success("Emails sent successfully!");
+          toast.success("Email sent successfully!");
         } catch (error) {
           console.error("Error sending email:", error);
           toast.error("An error occurred while sending the email.");
@@ -375,42 +358,19 @@ const formattedDateTime = `${year}-${month}-${day} ${String(hours).padStart(2, '
       if (response.ok && data?.trackingDetails) {
         setTrackingData(data);
   
-        const currentDate = new Date();
-        const formattedDateTime = currentDate.toLocaleString("en-US", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        });
-  
-        const etaDate = new Date(data.trackingDetails.eta);
-        const etaFormattedDate = etaDate.toLocaleString("en-US", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        });
-  
-        const status =
-          data?.trackingDetails?.tracking_history?.find(
-            (historyItem: any) => historyItem.status === "TRANSIT"
-          )?.status || "Pending";
+        const currentDate = new Date().toISOString();
   
         const shipmentData = {
           orderId,
           userName: formData.fullName,
           userEmail: formData.email,
+          userPassword: formData.password,
           userPhone: formData.phoneNumber,
           countryCode: formData.countryCode,
           shippingAddress: `${formData.address}, ${formData.state}, ${formData.city}, ${formData.country}`,
-          status,
           trackingNumber: shipmentDetails.trackingNumber,
-          shipmentDate: formattedDateTime,
-          deliveryDate: etaFormattedDate,
+          shipmentDate: currentDate,
+          deliveryDate: data.trackingDetails.eta,
           carrier,
           shipmentCharges: "Free",
           totalAmount: shipmentDetails.totalAmount,
@@ -612,6 +572,53 @@ const formattedDateTime = `${year}-${month}-${day} ${String(hours).padStart(2, '
                     />
                   </div>
                 </div>
+              <div className="grid grid-cols-1 gap-4">
+             <div>
+             <label htmlFor="password" className="block font-medium">
+                      Password
+                    </label>
+             <input
+            type="password"
+            name="password"
+            placeholder="Set your password"
+            value={formData.password}
+            onChange={handleChange}
+            className="border rounded-lg w-1/2 p-2"
+            required
+          />
+          <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                      >
+                        {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+                      </button>
+             </div>
+         <div>
+         <label htmlFor="confirmPassword" className="block font-medium">
+                      
+                    </label>
+         <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm your password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className="border rounded-lg w-1/2 p-2"
+            required
+          />
+          <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                      >
+                        {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+                      </button>
+         </div>
+           {errors.password && (
+                      <p className="text-red-500 text-sm">{errors.password}</p>
+                    )}
+              </div>
 
                 <div className="flex justify-end gap-6">
                   <button
@@ -626,6 +633,7 @@ const formattedDateTime = `${year}-${month}-${day} ${String(hours).padStart(2, '
                     onClick={handleSubmit}
                     className="px-6 py-2 bg-darkPrimary text-white rounded-md hover:bg-navbarColor disabled:opacity-50"
                     disabled={isLoading}
+                    
                   >
                     Submit
                   </button>

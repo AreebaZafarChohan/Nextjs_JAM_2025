@@ -4,10 +4,10 @@ interface ShipmentData {
   orderId: string;
   userName: string;
   userEmail: string;
+  userPassword: string;
   userPhone: string;
   countryCode: string;
   shippingAddress: string;
-  status: string;
   trackingNumber: string;
   shipmentDate: string;
   deliveryDate: string;
@@ -21,10 +21,11 @@ export const createShipment = async (shipmentData: ShipmentData) => {
       orderId: shipmentData.orderId,
       userName: shipmentData.userName,
       userEmail: shipmentData.userEmail,
+      userPassword: shipmentData.userPassword,
       userPhone: shipmentData.userPhone,
       countryCode: shipmentData.countryCode,
       shippingAddress: shipmentData.shippingAddress,
-      status: shipmentData.status,
+      status: "Transit",
       trackingNumber: shipmentData.trackingNumber,
       shipmentDate: shipmentData.shipmentDate,
       deliveryDate: shipmentData.deliveryDate,
@@ -36,10 +37,10 @@ export const createShipment = async (shipmentData: ShipmentData) => {
     // Create the shipment in Sanity
     const createdShipment = await client.create(newShipment);
 
-    console.log("Shipment created:", createdShipment);
+    console.log("Shipment created ✅:", createdShipment);
     return createdShipment;
   } catch (error) {
-    console.error("Error creating shipment:", error);
+    console.error("Error creating shipment ❌:", error);
     throw error;
   }
 };

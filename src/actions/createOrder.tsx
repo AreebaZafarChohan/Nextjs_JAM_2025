@@ -1,4 +1,5 @@
 import { client } from "../sanity/lib/client";
+import { v4 as uuidv4 } from "uuid";
 
 interface OrderData {
   productId: string;
@@ -12,6 +13,7 @@ interface OrderData {
 interface Order {
   orderId: string;
   userId: string;
+  userPassword: string;
   orderDate: string;
   orderData: OrderData[];
 }
@@ -36,8 +38,10 @@ export const createOrder = async (order: Order) => {
       _type: 'order',
       orderId: order.orderId,
       userId: order.userId,
+      userPassword: order.userPassword,
       orderDate: order.orderDate,
-      orderData: order.orderData.map((item) => ({
+      orderData: order.orderData.map((item, index) => ({
+        _key: uuidv4(),
         productId: item.productId,
         productName: item.productName,
         quantity: item.quantity,
@@ -52,10 +56,10 @@ export const createOrder = async (order: Order) => {
     // Create the order in Sanity
     const createdOrder = await client.create(newOrder);
 
-    console.log('Order created:', createdOrder);
+    console.log('Order created ✅:', createdOrder);
     return createdOrder;
   } catch (error) {
-    console.error('Error creating order:', error);
+    console.error('Error creating order ❌:', error);
     throw error;
   }
 };

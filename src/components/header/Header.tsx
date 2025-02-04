@@ -77,18 +77,6 @@ const Header = () => {
     }
   }, [searchQuery, productData]);
 
-  // Filter products based on search query
-  useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredProducts([]);
-    } else {
-      const results = productData.filter((product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredProducts(results);
-    }
-  }, [searchQuery, productData]);
-
   return (
     <nav className="relative w-full p-6 md:py-5 bg-white">
       <div className="flex justify-between md:justify-center items-center md:border-b md:border-lightGray">
@@ -210,7 +198,7 @@ const Header = () => {
 
         <div className="relative flex gap-4 justify-center">
           {/* User Icon */}
-          <Link href="/" aria-label="User Profile">
+          <Link href="/userOrder" aria-label="User Profile">
             <div className="stick right-[18rem] flex items-center justify-center w-6 h-6 rounded-full border border-transparent hover:bg-lightGray">
               <FaUserCircle />
             </div>
@@ -227,6 +215,7 @@ const Header = () => {
           <div className="stick  right-[16rem] flex items-center justify-center w-6 h-6 rounded-full border border-transparent hover:bg-lightGray">
               <UserButton />
             </div>
+           
         </div>
       </div>
     </nav>

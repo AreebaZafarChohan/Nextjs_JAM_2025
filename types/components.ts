@@ -40,3 +40,26 @@ export interface CartItem {
     quantity: number;
     price: string | number;
 }
+
+export interface Order {
+    orderId: string;
+    productId: string;
+    productName: string;
+    productPrice: number;
+    quantity: number;
+  }
+  
+  export interface UserData {
+    userId: string;
+    name: string;
+    email: string;
+    phoneNumber: string;
+    countryCode: string;
+    address: string;
+    password: string;
+    country: string;
+    zipCode: string;
+    state: string;
+    city: string;
+    order: Order[];
+  }

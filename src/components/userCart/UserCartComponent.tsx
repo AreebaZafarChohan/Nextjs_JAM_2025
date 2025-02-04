@@ -1,10 +1,9 @@
 "use client";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import ItemCard from "./ItemCard";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
-import { CartItem } from "../../../types/components";
 
 const CheckoutModal = dynamic(() => import("../OrderSystem/CheckoutModal"), {
   ssr: false,
@@ -60,11 +59,11 @@ const UserCartComponent = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubmitForm = (formData: any) => {
+  /* const handleSubmitForm = (formData: any) => {
     console.log(formData);
     localStorage.removeItem("cart");
     setCartItems([]);
-  };
+  }; */
 
   const handleCloseModal = () => setIsModalOpen(false);
 

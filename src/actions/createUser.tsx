@@ -1,23 +1,6 @@
+import { UserData } from "../../types/components";
 import { client } from "../sanity/lib/client";
-
-// TypeScript interface to define the shape of the userData object
-interface Order {
-  orderId: string;
-  productId: string;
-  productName: string;
-  productPrice: number;
-  quantity: number;
-}
-
-interface UserData {
-  userId: string;
-  name: string;
-  email: string;
-  phoneNumber: string;
-  countryCode: string;
-  address: string;
-  order: Order[];
-}
+import { v4 as uuidv4 } from "uuid";
 
 export const createOrUpdateUser = async (userData: UserData) => {
   try {
@@ -34,10 +17,16 @@ export const createOrUpdateUser = async (userData: UserData) => {
         userId: userData.userId,
         name: userData.name,
         email: userData.email,
+        password: userData.password,
         phoneNumber: userData.phoneNumber,
         countryCode: userData.countryCode,
         address: userData.address,
+        country: userData.country,
+        zipCode: userData.zipCode,
+        state: userData.state,
+        city: userData.city,
         orders: userData.order.map((order) => ({
+         _key: uuidv4(),
           orderId: order.orderId,
           productId: order.productId,
           productName: order.productName,
@@ -49,13 +38,14 @@ export const createOrUpdateUser = async (userData: UserData) => {
       };
 
       const createdUser = await client.create(newUser);
-      console.log("New user created:", createdUser);
+      console.log("New user created ✅:", createdUser);
       return createdUser;
     } else if (existingUser.orders && existingUser.orders.length > 0) {
       // User exists and already has orders, update their orders
       const updatedOrders = [
         ...existingUser.orders,
         ...userData.order.map((order) => ({
+          _key: uuidv4(),
           orderId: order.orderId,
           productId: order.productId,
           productName: order.productName,
@@ -72,7 +62,7 @@ export const createOrUpdateUser = async (userData: UserData) => {
         })
         .commit();
 
-      console.log("User orders updated:", updatedUser);
+      console.log("User orders updated 🔄:", updatedUser);
       return updatedUser;
     } else {
       // User exists but has no orders, update createdAt and updatedAt
@@ -80,6 +70,7 @@ export const createOrUpdateUser = async (userData: UserData) => {
         .patch(existingUser._id)
         .set({
           orders: userData.order.map((order) => ({
+            _key: uuidv4(),
             orderId: order.orderId,
             productId: order.productId,
             productName: order.productName,
@@ -91,11 +82,11 @@ export const createOrUpdateUser = async (userData: UserData) => {
         })
         .commit();
 
-      console.log("User with no orders updated:", updatedUser);
+      console.log("User with no orders updated 🔄:", updatedUser);
       return updatedUser;
     }
   } catch (error) {
-    console.error("Error in create or Update User:", error);
+    console.error("Error in create or Update User ❌:", error);
     throw error;
   }
 };

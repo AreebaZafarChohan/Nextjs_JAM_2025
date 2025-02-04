@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
-const SHIPPO_API_KEY = "shippo_test_1892a121a35f0cb83796c297b5f150ef4ccfc753"; // Replace with your Shippo API key
+const SHIPPO_API_KEY = "shippo_test_1892a121a35f0cb83796c297b5f150ef4ccfc753"; 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
