@@ -17,7 +17,6 @@ export const createOrUpdateUser = async (userData: UserData) => {
         userId: userData.userId,
         name: userData.name,
         email: userData.email,
-        password: userData.password,
         phoneNumber: userData.phoneNumber,
         countryCode: userData.countryCode,
         address: userData.address,

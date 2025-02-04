@@ -4,7 +4,6 @@ interface ShipmentData {
   orderId: string;
   userName: string;
   userEmail: string;
-  userPassword: string;
   userPhone: string;
   countryCode: string;
   shippingAddress: string;
@@ -21,7 +20,6 @@ export const createShipment = async (shipmentData: ShipmentData) => {
       orderId: shipmentData.orderId,
       userName: shipmentData.userName,
       userEmail: shipmentData.userEmail,
-      userPassword: shipmentData.userPassword,
       userPhone: shipmentData.userPhone,
       countryCode: shipmentData.countryCode,
       shippingAddress: shipmentData.shippingAddress,

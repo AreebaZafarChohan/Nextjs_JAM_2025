@@ -56,7 +56,6 @@ export interface Order {
     phoneNumber: string;
     countryCode: string;
     address: string;
-    password: string;
     country: string;
     zipCode: string;
     state: string;

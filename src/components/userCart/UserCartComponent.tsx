@@ -59,11 +59,11 @@ const UserCartComponent = () => {
     setIsModalOpen(true);
   };
 
-  /* const handleSubmitForm = (formData: any) => {
+   const handleSubmitForm = (formData: any) => {
     console.log(formData);
     localStorage.removeItem("cart");
     setCartItems([]);
-  }; */
+  }; 
 
   const handleCloseModal = () => setIsModalOpen(false);
 

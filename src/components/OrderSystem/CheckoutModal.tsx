@@ -35,8 +35,6 @@ const CheckoutModal = ({
     zipCode: "",
     state: "",
     country: "",
-    password: "",
-    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -130,7 +128,6 @@ const CheckoutModal = ({
           userId: userId,
           name: formData.fullName,  // Get values from formData state
           email: formData.email,
-          password: formData.password,
           phoneNumber: formData.phoneNumber,
           countryCode: formData.countryCode,
           address: formData.address,
@@ -171,7 +168,6 @@ const CheckoutModal = ({
         const OrderData = {
           orderId: orderId,
           userId: userId,
-          userPassword: formData.password,
           orderDate: new Date().toISOString(),
           orderData: cartItems.map((item: CartItem) => ({
             productId: item.id,
@@ -364,7 +360,6 @@ const CheckoutModal = ({
           orderId,
           userName: formData.fullName,
           userEmail: formData.email,
-          userPassword: formData.password,
           userPhone: formData.phoneNumber,
           countryCode: formData.countryCode,
           shippingAddress: `${formData.address}, ${formData.state}, ${formData.city}, ${formData.country}`,
@@ -572,53 +567,6 @@ const CheckoutModal = ({
                     />
                   </div>
                 </div>
-              <div className="grid grid-cols-1 gap-4">
-             <div>
-             <label htmlFor="password" className="block font-medium">
-                      Password
-                    </label>
-             <input
-            type="password"
-            name="password"
-            placeholder="Set your password"
-            value={formData.password}
-            onChange={handleChange}
-            className="border rounded-lg w-1/2 p-2"
-            required
-          />
-          <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
-                      >
-                        {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
-                      </button>
-             </div>
-         <div>
-         <label htmlFor="confirmPassword" className="block font-medium">
-                      
-                    </label>
-         <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm your password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className="border rounded-lg w-1/2 p-2"
-            required
-          />
-          <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
-                      >
-                        {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
-                      </button>
-         </div>
-           {errors.password && (
-                      <p className="text-red-500 text-sm">{errors.password}</p>
-                    )}
-              </div>
 
                 <div className="flex justify-end gap-6">
                   <button

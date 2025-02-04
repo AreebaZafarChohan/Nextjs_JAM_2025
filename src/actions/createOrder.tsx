@@ -13,7 +13,6 @@ interface OrderData {
 interface Order {
   orderId: string;
   userId: string;
-  userPassword: string;
   orderDate: string;
   orderData: OrderData[];
 }
@@ -38,7 +37,6 @@ export const createOrder = async (order: Order) => {
       _type: 'order',
       orderId: order.orderId,
       userId: order.userId,
-      userPassword: order.userPassword,
       orderDate: order.orderDate,
       orderData: order.orderData.map((item, index) => ({
         _key: uuidv4(),
