@@ -83,7 +83,7 @@ const PopularProducts = () => {
 
       {/* View Collection Button */}
       <div className="relative lg:-left-[2rem] lg:top-[-2.5rem] flex lg:justify-center mt-0 md:mt-[4rem] lg:mt-0 md:left-[12rem] hero-popular-button">
-        <button className="m-2 w-[309px] py-[16px] px-[32px] bg-lightGray bg-opacity-[15%] leading-6 text-[#2a254b] font-satoshi font-normal hover:bg-darkPrimary hover:text-white transition-all duration-300 ease-in-out text-lg border-2 border-[#2a254b]">
+        <button className="m-2 w-[309px] py-[16px] px-[32px] bg-lightGray bg-opacity-[15%] leading-6 text-[#2a254b] font-satoshi font-normal hover:bg-darkPrimary hover:text-white transition-all duration-300 ease-in-out text-lg border-2 border-[#2a254b] spc4:mt-24">
           <Link href="/products"> View collection</Link>
         </button>
       </div>

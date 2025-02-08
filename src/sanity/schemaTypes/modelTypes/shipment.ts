@@ -21,11 +21,6 @@ export default {
         title: 'User Email',
       },
       {
-        name: 'userPassword',
-        title: 'User Password',
-        type: 'string',
-      },
-      {
         name: 'countryCode',
         title: 'Country Code',
         type: 'string',

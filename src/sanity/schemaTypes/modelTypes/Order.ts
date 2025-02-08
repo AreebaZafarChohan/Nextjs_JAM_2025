@@ -69,11 +69,6 @@ export default {
       ],
     },
     {
-      name: 'userPassword',
-      title: 'User Password',
-      type: 'string',
-    },
-    {
       name: 'createdAt',
       title: 'Created At',
       type: 'datetime',

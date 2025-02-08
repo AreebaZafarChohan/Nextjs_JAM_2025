@@ -12,7 +12,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
 
-import { Autoplay} from "swiper/modules";
+import { Autoplay } from "swiper/modules";
+import ProductDetailsTab from "../designComponents/ProductDetailsTab";
 
 const ProductCardDetails = () => {
   const params = useParams(); // Getting the route parameter
@@ -67,6 +68,13 @@ const ProductCardDetails = () => {
 
   // Handle Add to Cart functionality
   const handleAddToCart = () => {
+
+    const stock = details?.stock ?? 0;
+  
+    if (stock <= 0) {
+      alert("Product is out of stock!");
+      return;
+    }
     const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
 
     // Check if the product already exists in the cart
@@ -84,7 +92,7 @@ const ProductCardDetails = () => {
         heading: details?.name,
         price: details?.price,
         quantity,
-        image: details?.image,
+        image: details?.imageUrl,
       });
     }
 
@@ -130,7 +138,7 @@ const ProductCardDetails = () => {
     fetchProducts();
   }, []);
   return (
-    <div className="relative w-full lg:h-[2827px] h-[3579px] mx-auto lg:mx-0 md:mx-auto ">
+    <div className="relative w-full lg:h-[4000px] h-[3579px] mx-auto lg:mx-0 md:mx-auto ">
       {details && (
         <div className="w-full mt-[6rem] h-[1055px] bg-white flex flex-col md:mt-[8rem] md:flex-row md:gap-[1.5rem] md:h-[759px] details">
           <div className="md:w-[55%] md:h-[759px] xs:h-[600px] h-[380px]">
@@ -198,7 +206,7 @@ const ProductCardDetails = () => {
                 </h6>
               </div>
               <div className="border-t border-darkPrimary pt-2 my-2">
-                {details.stock !== undefined && details.stock !== null ? (
+                {details?.stock !== undefined && details?.stock !== null ? (
                   details.stock === 0 ? (
                     <p className="font-normal text-red-500">Out of Stock</p>
                   ) : (
@@ -243,7 +251,7 @@ const ProductCardDetails = () => {
                 </button>
 
                 <button
-                  onClick={() => router.push('/products')}
+                  onClick={() => router.push("/products")}
                   className="relative md:top-5 md:w-[250px] w-full bg-lightGray px-[32px] py-[10px] font-satoshi font-normal leading-6 text-darkPrimary hover:bg-darkPrimary hover:text-white md:h-[3rem] see-less"
                 >
                   See Less
@@ -285,59 +293,65 @@ const ProductCardDetails = () => {
           </div>
         </div>
       )}
+      <div className="mt-[8rem]">
+          <ProductDetailsTab />
+        </div>
 
       <div className="w-full md:mt-[2rem] h-[811px] flex flex-col md:mx-8 lg:mx-0 xl:mx-7 detail-products">
-        <h5 className="mt-[10rem] lg:mt-[10rem] md:mt-[15rem] leading-[24.6px] text-darkPrimary font-clash font-normal text-xl md:text-2xl lg:text-3xl"> 
+        <h5 className="mt-[10rem] lg:mt-[10rem] md:mt-[15rem] leading-[24.6px] text-darkPrimary font-clash font-normal text-xl md:text-2xl lg:text-3xl">
           You might also like
         </h5>
         <div className="detail-product-card md:block lg:block xl:block sm:block hidden">
-  {productData?.length ? (
-    <Swiper
-      spaceBetween={16} // Spacing between slides
-      slidesPerView={3} // Default slides for small screens
-      modules={[Autoplay]} // Include Autoplay in modules
-      autoplay={{
-        delay: 1000, // Delay between slides in milliseconds
-        disableOnInteraction: false, // Allow autoplay even after interaction
-      }}
-      loop={true} // Enable looping
-    >
-      {productData.map((product) => (
-        <SwiperSlide key={product.id}>
-          {/* Render ProductCard for each product */}
-          <ProductCard productData={product} />
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  ) : (
-    <p className="text-center text-3xl text-darkPrimary font-bold font-clash">Loading products...</p>
-  )}
-</div>
+          {productData?.length ? (
+            <Swiper
+              spaceBetween={16} // Spacing between slides
+              slidesPerView={3} // Default slides for small screens
+              modules={[Autoplay]} // Include Autoplay in modules
+              autoplay={{
+                delay: 1000, // Delay between slides in milliseconds
+                disableOnInteraction: false, // Allow autoplay even after interaction
+              }}
+              loop={true} // Enable looping
+            >
+              {productData.map((product) => (
+                <SwiperSlide key={product.id}>
+                  {/* Render ProductCard for each product */}
+                  <ProductCard productData={product} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <p className="text-center text-3xl text-darkPrimary font-bold font-clash">
+              Loading products...
+            </p>
+          )}
+        </div>
 
-<div className="detail-product-card md:hidden lg:hidden xl:hidden sm:hidden block">
-  {productData?.length ? (
-    <Swiper
-      spaceBetween={16} // Spacing between slides
-      slidesPerView={2} // Default slides for small screens
-     
-      modules={[Autoplay]} // Include Autoplay in modules
-      autoplay={{
-        delay: 1000, // Delay between slides in milliseconds
-        disableOnInteraction: false, // Allow autoplay even after interaction
-      }}
-      loop={true} // Enable looping
-    >
-      {productData.map((product) => (
-        <SwiperSlide key={product.id}>
-          {/* Render ProductCard for each product */}
-          <ProductCard productData={product} />
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  ) : (
-    <p className="text-center text-3xl text-darkPrimary font-bold font-clash">Loading products...</p>
-  )}
-</div>
+        <div className="detail-product-card md:hidden lg:hidden xl:hidden sm:hidden block">
+          {productData?.length ? (
+            <Swiper
+              spaceBetween={16} // Spacing between slides
+              slidesPerView={2} // Default slides for small screens
+              modules={[Autoplay]} // Include Autoplay in modules
+              autoplay={{
+                delay: 1000, // Delay between slides in milliseconds
+                disableOnInteraction: false, // Allow autoplay even after interaction
+              }}
+              loop={true} // Enable looping
+            >
+              {productData.map((product) => (
+                <SwiperSlide key={product.id}>
+                  {/* Render ProductCard for each product */}
+                  <ProductCard productData={product} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <p className="text-center text-3xl text-darkPrimary font-bold font-clash">
+              Loading products...
+            </p>
+          )}
+        </div>
 
         <button className="md:w-[250px] w-full md:relative lg:left-[34rem] lg:-bottom-[2rem] md:-bottom-[18rem] md:left-[16rem] py-[16px] px-[32px] bg-lightGray bg-opacity-[15%] leading-6 text-darkPrimary font-satoshi font-normal hover:bg-darkPrimary hover:text-white transition-all duration-300 ease-in-out mt-[8rem] btn">
           View collection

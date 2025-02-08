@@ -15,6 +15,7 @@ const config: Config = {
         lightGray: "var(--light-gray)",
         darkPrimary: "var(--dark-primary)",
         darkBlue: "var(--dark-blue)",
+        buttonBlue: "var(--button-blue)",
       },
       fontFamily: {
         clash: ["Clash Display", "sans-serif"],
@@ -24,6 +25,10 @@ const config: Config = {
       screens: {
         xs: { max : '639px'},
         xxs: { max : '534px'},
+        spc: { max : '650px'},
+        spc2: {max: "605px"},
+        spc3: {max: "445px"},
+        spc4: {max: "390px"},
     },
 
     },

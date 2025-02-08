@@ -6,6 +6,7 @@ import { UserButton } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
+import SearchBar from "./SearchBar";
 
 interface Product {
   id: string;
@@ -26,56 +27,9 @@ interface Product {
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [productData, setProductData] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
-  const toggleSearch = () => setIsSearchOpen((prev) => !prev);
 
-  // Fetch products from Sanity
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const products: Product[] = await client.fetch(
-          `*[_type=="product"]{
-          id,
-          name,
-          description,
-          price,
-          color,
-          material,
-          dimensions,
-          "stock": stock->stock,
-          added_on,
-          "imageUrl": image.asset->url,
-          rating,
-          rating_counts,
-          category,
-          comments,
-        }`
-        );
-        setProductData(products);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  // Filter products based on search query
-  useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredProducts([]);
-    } else {
-      const results = productData.filter((product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredProducts(results);
-    }
-  }, [searchQuery, productData]);
 
   return (
     <nav className="relative w-full p-6 md:py-5 bg-white">
@@ -86,15 +40,6 @@ const Header = () => {
         </h1>
 
         <div className="flex items-center space-x-4">
-          {/* Search Icon */}
-          <button
-            onClick={toggleSearch}
-            aria-label="Search"
-            className="md:relative md:right-[20rem] lg:right-[33rem] flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-200"
-          >
-            <CiSearch className="text-lg" />
-          </button>
-
           {/* Hamburger Icon */}
           <button
             onClick={toggleMenu}
@@ -105,59 +50,10 @@ const Header = () => {
           </button>
         </div>
       </div>
-
-      {/* Search Box */}
-      {isSearchOpen && (
-        <div className="mt-4">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full md:w-[70%] border placeholder:text-black  bg-black/10 text-black border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-black"
-          />
-          {/* Display filtered products */}
-          <div className="my-4">
-            {filteredProducts.length > 0 ? (
-              <ul className="bg-white border border-gray-200 rounded-md shadow-md grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
-                {filteredProducts.map((product) => (
-                  <li
-                  key={product.id}
-                  className="p-4 flex items-center justify-between border-b last:border-none border-r"
-                >
-                  <div className="flex items-center space-x-4">
-                    <Image
-                      src={product.imageUrl}
-                      alt={product.name}
-                      width={50}
-                      height={50}
-                      className="rounded-md"
-                    />
-                    <div>
-                      <p className="font-medium text-darkBlue sm:text-base text-xs">{product.name}</p>
-                      <p className="text-gray-600 sm:text-base text-xs">${product.price}</p>
-                    </div>
-                  </div>
-                
-                  {/* Align View button to the right */}
-                  <div>
-                    <Link href={`/products/${product.id}`}>
-                      <button className="text-white border border-darkPrimary bg-darkBlue px-4 py-2 rounded-md hover:bg-lightGray hover:text-darkPrimary">
-                        View
-                      </button>
-                    </Link>
-                  </div>
-                </li>
-                ))}
-              </ul>
-            ) : (
-              searchQuery && (
-                <p className="mt-2 text-gray-500">No products found.</p>
-              )
-            )}
-          </div>
-        </div>
-      )}
+      <div className="flex justify-center my-4">
+         {/* Search Icon */}
+      <SearchBar />
+      </div>
 
       {/* Navigation Links */}
       <div
@@ -190,10 +86,10 @@ const Header = () => {
           Contact
         </Link>
         <Link
-          href="/admin"
+          href="/helpCenter"
           className="block text-center border-b border-transparent py-1 hover:border-darkPrimary"
         >
-          Admin Pannel
+          Help Center
         </Link>
 
         <div className="relative flex gap-4 justify-center">
@@ -215,7 +111,6 @@ const Header = () => {
           <div className="stick  right-[16rem] flex items-center justify-center w-6 h-6 rounded-full border border-transparent hover:bg-lightGray">
               <UserButton />
             </div>
-           
         </div>
       </div>
     </nav>

@@ -1,7 +1,9 @@
+import UserOrders from "@/components/OrderSystem/UserOrders";
+
 const UserOrder = () => {
   return (
     <div>
-    User Order
+    <UserOrders />
     </div>
   );
 };

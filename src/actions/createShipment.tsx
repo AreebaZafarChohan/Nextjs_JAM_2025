@@ -1,17 +1,6 @@
+import { ShipmentData } from "../../types/components";
 import { client } from "../sanity/lib/client";
 
-interface ShipmentData {
-  orderId: string;
-  userName: string;
-  userEmail: string;
-  userPhone: string;
-  countryCode: string;
-  shippingAddress: string;
-  trackingNumber: string;
-  shipmentDate: string;
-  deliveryDate: string;
-  carrier: string;
-}
 
 export const createShipment = async (shipmentData: ShipmentData) => {
   try {

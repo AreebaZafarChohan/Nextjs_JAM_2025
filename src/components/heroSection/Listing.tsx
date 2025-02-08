@@ -44,7 +44,7 @@ const Listing = () => {
   }, []);
 
   return (
-    <div className="relative mt-[4rem] h-[573px] md:h-[744px] bg-white md:px-[2rem] lg:px-0 lg:mx-[1.5rem] md:mt-0 lg:top-[6rem] xl:mx-[3rem] popular-product listing slider">
+    <div className="relative mt-[4rem] h-[573px] md:h-[744px] bg-white md:px-[2rem] lg:px-0 lg:mx-[1.5rem] md:mt-0 lg:top-[6rem] xl:mx-[3rem] popular-product listing slider spc4:mt-0 spc4:top-0">
       <h4 className="font-clash font-normal leading-[24.6px] text-darkPrimary text-xl lg:text-4xl xs:text-3xl lg:mb-6 hero-listing-h4">
         New ceramics
       </h4>
@@ -97,7 +97,7 @@ const Listing = () => {
   )}
 </div>
 
-      <button className="relative md:top-[4rem] lg:left-[28rem] md:left-[10rem] m-2 w-[309px] py-[16px] px-[32px] bg-lightGray bg-opacity-[15%] leading-6 text-[#2a254b] font-satoshi font-normal hover:bg-darkPrimary hover:text-white transition-all duration-300 ease-in-out text-lg h-14 border-2 border-[#2a254b] hero-button">
+      <button className="relative md:top-[4rem] lg:left-[28rem] md:left-[10rem] m-2 w-[309px] py-[16px] px-[32px] bg-lightGray bg-opacity-[15%] leading-6 text-[#2a254b] font-satoshi font-normal hover:bg-darkPrimary hover:text-white transition-all duration-300 ease-in-out text-lg h-14 border-2 border-[#2a254b] hero-button  spc4:bottom-8">
        <Link href="/products"> View collection</Link>
       </button>
     </div>

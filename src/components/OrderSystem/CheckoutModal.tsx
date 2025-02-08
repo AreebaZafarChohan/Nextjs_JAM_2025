@@ -1,12 +1,13 @@
 "use client";
-import { useEffect, useInsertionEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {CartItem } from "../../../types/components";
 import { createOrUpdateUser } from "@/actions/createUser";
 import { createOrder } from "@/actions/createOrder";
 import { createShipment } from "@/actions/createShipment";
 import emailjs from "@emailjs/browser";
 import toast from "react-hot-toast";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+
+//const stripePromise = loadStripe(process.env)
 
 const CheckoutModal = ({
   isOpen,
@@ -45,7 +46,6 @@ const CheckoutModal = ({
   const [isTracking, setIsTracking] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showShipmentDetails, setShowShipmentDetails] = useState(false); // State to control shipment details visibility
-  const [showPassword, setShowPassword] = useState(false);
 
 
   const countries = [
@@ -208,15 +208,17 @@ const CheckoutModal = ({
             : "No items found.";
       
           const customerEmailParams = {
-            to_email: recipientEmail, // Ensure valid email is set
+            email_to: recipientEmail, // Ensure valid email is set
             to_name: userData.fullName || "Customer",
             item_name: orderItems,
             total_price: `£${calculateSubtotal().toFixed(2)}`,
             recipient_name: userData.fullName || "N/A",
             shipping_address: userData.address || "N/A",
             city: userData.city || "N/A",
+            country: userData.country || "N/A",
             postal_code: userData.zipCode || "N/A",
             contact_number: userData.phoneNumber || "N/A",
+            order_id: orderId,
             support_email: "areebazafar715@gmail.com",
             support_phone: "+923495678943",
             payment_method: "COD",
@@ -390,6 +392,8 @@ const CheckoutModal = ({
       setIsTracking(false);
     }
   };
+
+  
 
   const userFormData = { ...formData };
 

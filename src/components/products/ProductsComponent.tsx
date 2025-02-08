@@ -33,7 +33,7 @@ const ProductsComponent = () => {
   const toggleColorMenu = () => setIsColorOpen(!isColorOpen); // Toggle color filter menu
 
   const fetchProducts = async () => {
-    let baseQuery = `*[_type=="product"`;
+    let baseQuery = `*[_type=="product"]`;
 
     if (selectedCategory) baseQuery += ` && category == "${selectedCategory}"`;
     if (selectedMaterial) baseQuery += ` && material == "${selectedMaterial}"`;

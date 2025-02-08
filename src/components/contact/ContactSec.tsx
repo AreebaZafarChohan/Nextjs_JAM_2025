@@ -1,5 +1,12 @@
 "use client";
 import React, { useState } from "react";
+import {   Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator, } from "@/components/designComponents/ui/breadcrumb";
+import Link from "next/link";
 
 const ContactSec: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -92,7 +99,29 @@ const ContactSec: React.FC = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-darkPrimary border-2 p-8 rounded-lg items-center my-[4rem] shadow-md">
+    <>
+    <div className="absolute top-[-80px] left-[100px] mb-[6rem]">
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink>
+                    <Link href="/helpCenter" className="font-satoshi">
+                    Help Center
+                    </Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>
+                    <Link href="/contact" className="font-satoshi">
+                      Contact
+                    </Link>
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+    <div className="max-w-lg mx-auto bg-darkPrimary border-2 p-8 rounded-lg items-center mt-36 mb-[4rem] shadow-md">
       <h2 className="text-2xl md:text-4xl lg:text-4xl font-bold mb-4 text-lightGray font-clash text-center">Contact Us</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -173,6 +202,7 @@ const ContactSec: React.FC = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
