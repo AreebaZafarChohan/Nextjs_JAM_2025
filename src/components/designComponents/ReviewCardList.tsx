@@ -141,6 +141,7 @@ const ReviewCardList = () => {
       _id: uuidv4(),
       name: newReview.name,
       comment: newReview.comment,
+      description: "",
       date: newReview.date,
       rating: "/images/rating-star.svg",
       correct: "/images/correct-icon.svg",
@@ -198,6 +199,7 @@ const ReviewCardList = () => {
               key={item._id}
               _id={item._id}
               name={item.name}
+              description={item.description}
               comment={item.comment}
               date={new Date(item.date).toLocaleDateString()}
               rating={item.rating || "/images/rating-star.svg"}
