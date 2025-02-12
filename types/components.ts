@@ -102,6 +102,7 @@ export interface ReviewCardPropsTypes {
   comment: string;
   date: string;
   rating: string;
+  description: string;
   correct: string;
   onEdit: () => void;
   onRemove: (id: string) => Promise<void>;
