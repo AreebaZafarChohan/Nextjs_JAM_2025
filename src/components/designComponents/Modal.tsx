@@ -46,8 +46,8 @@ const Modal: React.FC<ModalProps> = ({ onClose, onSubmit, currentReview }) => {
       description: newReview.description,
       date: newReview.date,
       comment: "",
-      rating: "/rating.svg", 
-      correct: "/correct-icon.svg",
+      rating: "/images/rating-star.svg", 
+      correct: "/images/correct-icon.svg",
       onEdit: () => {}, 
       onRemove: async () => {}, 
     };
