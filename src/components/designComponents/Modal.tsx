@@ -1,9 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { ModalProps } from "../../../types/components"; 
+import { ModalProps, ReviewCardPropsTypes } from "../../../types/components"; 
 import { ReviewSubmissionType } from "../../../types/components"; 
-import { ReviewCardPropsTypes } from "../../../types/components";
 import {
   DialogContent,
   DialogDescription,
