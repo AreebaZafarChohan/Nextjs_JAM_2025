@@ -40,7 +40,7 @@ const HappyCustomerCardList = () => {
     responsive: [
       { breakpoint: 1440, settings: { slidesToShow: 3 } },
       { breakpoint: 1280, settings: { slidesToShow: 3 } },
-      { breakpoint: 1024, settings: { slidesToShow: 2 } },
+      { breakpoint: 1067, settings: { slidesToShow: 2 } },
       { breakpoint: 768, settings: { slidesToShow: 2 } },
       { breakpoint: 599, settings: { slidesToShow: 1 } },
     ],
