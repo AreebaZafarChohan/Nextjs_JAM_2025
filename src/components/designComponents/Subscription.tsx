@@ -178,7 +178,7 @@ export default function SubscriptionComponent() {
     <div className="max-w-4xl mx-auto p-6">
       {showForm && (
         <div>
-          <h1 className="text-[29px] font-integralCf font-extrabold mt-8 tracking-wider">
+          <h1 className="text-[29px] font-clash text-darkPrimary font-extrabold mt-8 tracking-wider">
             Unlock Premium Perks
           </h1>
           <div className="mt-7">
@@ -189,13 +189,13 @@ export default function SubscriptionComponent() {
                 type="text"
                 name="floating_text"
                 id="floating_text"
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-[1px] border-gray-200 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-gray-500 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-[1px] border-buttonBlue appearance-none focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                 placeholder=" "
                 required
               />
               <label
                 htmlFor="floating_email"
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-gray-500 peer-focus:dark:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-satoshi"
+                className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-gray-500  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-satoshi"
               >
                 Your Name
               </label>
@@ -207,19 +207,19 @@ export default function SubscriptionComponent() {
                 type="email"
                 name="floating_email"
                 id="floating_email"
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-[1px] border-gray-200 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-gray-500 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                className="block py-2.5 px-0 w-full text-sm text-buttonBlue bg-transparent border-0 border-b-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                 placeholder=" "
                 required
               />
               <label
                 htmlFor="floating_email"
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-gray-500 peer-focus:dark:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-satoshi"
+                className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-satoshi"
               >
                 Email Address
               </label>
             </div>
             <button
-              className="w-full bg-black text-white py-2 rounded-[50px] hover:bg-black/80 transition duration-300"
+              className="w-full bg-darkPrimary text-white py-2 rounded-[50px] hover:bg-gray-900 transition duration-300"
               onClick={handleFormSubmit}
             >
               Next
@@ -236,8 +236,8 @@ export default function SubscriptionComponent() {
       {showCards && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-            <h3 className="text-lg font-semibold mb-2 font-integralCf tracking-wider">Monthly Plan</h3>
-            <p className="text-2xl font-bold mb-2 font-satoshiBold">
+            <h3 className="text-lg font-semibold mb-2 font-clash text-darkPrimary tracking-wider">Monthly Plan</h3>
+            <p className="text-2xl font-bold mb-2 font-satoshiBold text-darkPrimary">
               $10 <span className="text-sm text-gray-500 font-satoshi">/month</span>
             </p>
             <ul className="text-sm text-gray-600 mb-4 font-satoshi">
@@ -246,7 +246,7 @@ export default function SubscriptionComponent() {
               <li>✅ Cancel anytime</li>
             </ul>
             <button
-              className="w-full bg-black text-white py-2 font-satoshi rounded-[50px] hover:bg-black/80 transition duration-300"
+              className="w-full bg-darkPrimary text-white py-2 font-satoshi rounded-[50px] hover:bg-lightGray border border-yellow-500 hover:text-darkPrimary transition duration-300"
               onClick={() => handleSubscribe("monthly")}
               disabled={loading}
             >
@@ -254,8 +254,8 @@ export default function SubscriptionComponent() {
             </button>
           </div>
           <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-            <h3 className="text-lg font-semibold mb-2 font-integralCf tracking-wide">Yearly Plan</h3>
-            <p className="text-2xl font-bold mb-2 font-satoshiBold">
+            <h3 className="text-lg font-semibold mb-2 font-clash text-darkPrimary tracking-wide">Yearly Plan</h3>
+            <p className="text-2xl font-bold mb-2 font-satoshiBold text-darkPrimary">
               $100 <span className="text-sm text-gray-500 font-satoshi">/year</span>
             </p>
             <ul className="text-sm text-gray-600 mb-4 font-satoshi">
@@ -264,7 +264,7 @@ export default function SubscriptionComponent() {
               <li>✅ Save $20 compared to monthly</li>
             </ul>
             <button
-              className="w-full bg-black text-white py-2 font-satoshi rounded-[50px] hover:bg-black/80 transition duration-300"
+              className="w-full bg-lightGray border border-yellow-500 text-darkPrimary py-2 font-satoshi rounded-[50px] hover:text-white hover:bg-darkPrimary transition duration-300"
               onClick={() => handleSubscribe("yearly")}
               disabled={loading}
             >
@@ -274,7 +274,7 @@ export default function SubscriptionComponent() {
         </div>
       )}
 
-      <h3 className="text-lg font-bold mt-6 font-satoshiBold">Your Subscriptions</h3>
+      <h3 className="text-lg font-bold mt-6 font-clash text-darkBlue">Your Subscriptions</h3>
       {loading ? (
         <p>Loading subscriptions...</p>
       ) : (
@@ -305,7 +305,7 @@ export default function SubscriptionComponent() {
                 <p className="text-sm text-gray-600 font-satoshi">Status: {sub.status}</p>
               </div>
               <button
-                className="bg-black text-white px-3 py-1 rounded-[50px] hover:bg-black/80 transition duration-300"
+                className="bg-darkPrimary text-white px-3 py-1 rounded-[50px] hover:bg-gray-900 transition duration-300"
                 onClick={() => sub._id && openCancelModal(sub._id)}
               >
                 Cancel

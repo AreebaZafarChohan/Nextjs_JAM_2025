@@ -28,8 +28,6 @@ import SearchBar from "@/app/faq/Searchbar";
 // import SideBar from "./SideBar";
 // import Faqs from "@/sanity/schemaTypes/faqs";
 
-
-
 const ProductDetailsTab = () => {
   const [activeTab, setActiveTab] = useState("tab1");
   // const dropdownRef = useRef(null);
@@ -46,52 +44,52 @@ const ProductDetailsTab = () => {
   //   setIsSubDropdownOpen(!isSubDropdownOpen);
   // };
 
-   const [selectedSort, setSelectedSort] = useState<string | null>(null);
-    const [productData, setProductData] = useState<CardProps[] | null>(null);
+  const [selectedSort, setSelectedSort] = useState<string | null>(null);
+  const [reviews, setReviews] = useState<CardProps[] | null>(null);
 
   let baseQuery = `*[_type=="customerReviews"]`;
 
-  const fetchProducts = async () => {
-
+  const fetchReviews = async () => {
     try {
-          const products = await client.fetch(baseQuery);
-     // Sort products based on selected sort option
-     let sortedProducts = [...products];
-     if (selectedSort === "Newest") {
-       sortedProducts.sort(
-         (a, b) =>
-           new Date(b.added_on).getTime() - new Date(a.added_on).getTime()
-       );
-     } else if (selectedSort === "Oldest") {
-       sortedProducts.sort(
-         (a, b) =>
-           new Date(a.added_on).getTime() - new Date(b.added_on).getTime()
-       );
-       setProductData(sortedProducts);
-      }} catch (error) {
-        console.error("Error fetching products:", error);
+      const reviews = await client.fetch(baseQuery);
+      let sortedReviews = [...reviews];
+
+      if (selectedSort === "Newest") {
+        sortedReviews.sort(
+          (a, b) =>
+            new Date(b.added_on).getTime() - new Date(a.added_on).getTime()
+        );
+      } else if (selectedSort === "Oldest") {
+        sortedReviews.sort(
+          (a, b) =>
+            new Date(a.added_on).getTime() - new Date(b.added_on).getTime()
+        );
       }
-  }
 
-   useEffect(() => {
-      const debounce = setTimeout(() => fetchProducts(), 300);
-      return () => clearTimeout(debounce);
-    }, [
-      selectedSort,
-    ]);
+      // Ensure the sorted data is always updated
+      setReviews(sortedReviews);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [faqs, setFaqs] = useState([]);
-    useEffect(() => {
-      const fetchFAQs = async () => {
-        const data = await client.fetch(`*[_type == "faq"]{
+  useEffect(() => {
+    const debounce = setTimeout(() => fetchReviews(), 300);
+    return () => clearTimeout(debounce);
+  }, [selectedSort]);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [faqs, setFaqs] = useState([]);
+  useEffect(() => {
+    const fetchFAQs = async () => {
+      const data = await client.fetch(`*[_type == "faq"]{
           question,
           answer
         }`);
-        setFaqs(data);
-      };
-      fetchFAQs();
-    }, []);
+      setFaqs(data);
+    };
+    fetchFAQs();
+  }, []);
 
   return (
     <div className="flex justify-between md:justify-center items-center w-full flex-col mx-auto px-4 sm:px-2">
@@ -151,31 +149,35 @@ const ProductDetailsTab = () => {
           <div id="content-tab1" role="tabpanel" aria-labelledby="tab1">
             <div className="p-6">
               <h2 className="md:text-2xl text-[18px] font-bold text-darkPrimary tracking-wider mb-4 font-clash">
-              Terms and Conditions
+                Terms and Conditions
               </h2>
               <ul className="list-disc list-inside text-gray-600 font-satoshi">
                 <li className="md:text-[16px] text-[12px] font-normal">
-                All purchases are subject to availability and confirmation of payment.
-
+                  All purchases are subject to availability and confirmation of
+                  payment.
                 </li>
                 <li className="md:text-[16px] text-[12px]">
-                Prices and product details may change without prior notice.
+                  Prices and product details may change without prior notice.
                 </li>
                 <li className="md:text-[16px] text-[12px]">
-                Returns and exchanges are accepted within 7 days of delivery, provided the item is unused and in original packaging.
+                  Returns and exchanges are accepted within 7 days of delivery,
+                  provided the item is unused and in original packaging.
                 </li>
                 <li className="md:text-[16px] text-[12px]">
-                Shipping times may vary depending on location and courier services.
+                  Shipping times may vary depending on location and courier
+                  services.
                 </li>
                 <li className="md:text-[16px] text-[12px]">
-                We are not responsible for any delays caused by unforeseen circumstances.
+                  We are not responsible for any delays caused by unforeseen
+                  circumstances.
                 </li>
                 <li className="md:text-[16px] text-[12px]">
-                By placing an order, you agree to our policies and terms of service.
+                  By placing an order, you agree to our policies and terms of
+                  service.
                 </li>
               </ul>
               <div className="mt-0">
-              <SubscriptionComponent/>
+                <SubscriptionComponent />
               </div>
             </div>
           </div>
@@ -263,18 +265,24 @@ const ProductDetailsTab = () => {
                   {isDropdownOpen && (
                     <div className="absolute left-[-120px] md:left-[-170px] z-10 mt-2 w-24 md:w-36 divide-y divide-gray-100 rounded-lg shadow bg-darkPrimary">
                       <ul className="py-2 text-sm text-gray-200 ">
-                <li
-                  className="block px-4 py-2 font-satoshi hover:bg-gray-200/30 text-white cursor-pointer"
-                  onClick={() => setSelectedSort("Oldest")}
-                >
-                  Oldest
-                </li>
-                <li
-                  className="block px-4 py-2 font-satoshi hover:bg-gray-200/30 text-white cursor-pointer"
-                  onClick={() => setSelectedSort("Newest")}
-                >
-                  Newest
-                </li>
+                        <li
+                          className="block px-4 py-2 font-satoshi hover:bg-gray-200/30 text-white cursor-pointer"
+                          onClick={() => {
+                            setSelectedSort("Oldest");
+                            fetchReviews(); // Ensure sorting happens immediately
+                          }}
+                        >
+                          Oldest
+                        </li>
+                        <li
+                          className="block px-4 py-2 font-satoshi hover:bg-gray-200/30 text-white cursor-pointer"
+                          onClick={() => {
+                            setSelectedSort("Newest");
+                            fetchReviews(); // Ensure sorting happens immediately
+                          }}
+                        >
+                          Newest
+                        </li>
                       </ul>
                     </div>
                   )}
@@ -287,22 +295,22 @@ const ProductDetailsTab = () => {
           </div>
         )}
         {activeTab === "tab3" && (
-       <div
-       id="content-tab3"
-       role="tabpanel"
-       aria-labelledby="tab3"
-       className="max-h-[400px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200"
-     >
-       <div>
-         <h1 className="font-clash text-center w-full text-[23px] sm:text-[27px] xxl:text-[38px] lg:text-[32px] text-darkPrimary font-extrabold tracking-wider">
-           Frequently Asked Questions
-         </h1>
-       <div className="flex justify-center my-5">
-       <SearchBar onSearch={setSearchQuery} />
-       </div>
-         <FAQSection faqs={faqs} query={searchQuery} />
-       </div>
-     </div>        
+          <div
+            id="content-tab3"
+            role="tabpanel"
+            aria-labelledby="tab3"
+            className="max-h-[400px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200"
+          >
+            <div>
+              <h1 className="font-clash text-center w-full text-[23px] sm:text-[27px] xxl:text-[38px] lg:text-[32px] text-darkPrimary font-extrabold tracking-wider">
+                Frequently Asked Questions
+              </h1>
+              <div className="flex justify-center my-5">
+                <SearchBar onSearch={setSearchQuery} />
+              </div>
+              <FAQSection faqs={faqs} query={searchQuery} />
+            </div>
+          </div>
         )}
       </div>
     </div>
