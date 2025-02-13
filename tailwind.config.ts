@@ -23,12 +23,13 @@ const config: Config = {
         satoshi: ["Satoshi", "sans-serif"],
       },
       screens: {
-        xs: { max : '639px'},
-        xxs: { max : '534px'},
-        spc: { max : '650px'},
+        xs: { max: '639px'},
+        xxs: { max: '534px'},
+        spc: { max: '650px'},
         spc2: {max: "605px"},
         spc3: {max: "445px"},
         spc4: {max: "390px"},
+        spc5: { max: "1220px"},
     },
 
     },

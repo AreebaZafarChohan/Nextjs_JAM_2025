@@ -74,7 +74,7 @@ const HappyCustomerCardList = () => {
                 />
               </div>
             </div>
-            <p className="text-[12px] md:text-[14px] text-darkPrimary lg:w-[306px] w-[270px] font-satoshi mt-2">
+            <p className="text-[12px] md:text-[14px] text-left text-darkPrimary lg:w-[270px] w-[270px] font-satoshi mt-2">
               {comment.comment}
             </p>
           </div>
