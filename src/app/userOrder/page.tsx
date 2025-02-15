@@ -1,11 +1,14 @@
 import UserOrders from "@/components/OrderSystem/UserOrders";
+import Container from "@/components/OrderSystem/Container";
 
-const UserOrder = () => {
+const OrderPage = () => {
   return (
     <div>
-    <UserOrders />
+      <Container>
+        <UserOrders />
+      </Container>
     </div>
   );
 };
 
-export default UserOrder;
+export default OrderPage;
