@@ -2449,7 +2449,7 @@
   }
 
   .detail-products .btn {
-    margin-top: 8rem;
+    margin-top: 0rem;
     margin-bottom: 0rem;
     left: 22rem;
   }
@@ -2628,11 +2628,11 @@
   }
 
   .detail-feature {
-    top: 25rem;
+    top: 5rem;
   }
 
   .detail-signup > div {
-    top: 2rem;
+    top: 0rem;
   }
 }
 
@@ -2670,7 +2670,7 @@
   }
 
   .detail-feature {
-    top: 8rem;
+    top: 0rem;
   }
 
   .detail-quantity-cart h5,

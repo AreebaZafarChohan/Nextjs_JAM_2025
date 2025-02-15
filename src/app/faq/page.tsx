@@ -26,7 +26,7 @@ const FAQPage = () => {
   return (
     <div>
       <div className="flex"> 
-        <div className="absolute top-[250px] left-[100px]"> 
+        <div className="absolute top-[210px] md:top-[250px] left-[100px]"> 
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>

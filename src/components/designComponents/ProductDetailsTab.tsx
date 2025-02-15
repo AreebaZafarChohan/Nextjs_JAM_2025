@@ -93,9 +93,9 @@ const ProductDetailsTab = () => {
 
   return (
     <div className="flex justify-between md:justify-center items-center w-full flex-col mx-auto px-4 sm:px-2">
-      <div className="border-b border-buttonBlue w-[270px] sm:w-full mx-auto xl:w-[1160px] xxl:w-[1240px]">
+      <div className="border-b border-buttonBlue w-full sm:w-full mx-auto xl:w-[1160px] xxl:w-[1240px]">
         <nav
-          className="flex justify-between sm:gap-x-[40px] gap-x-[30px] w-full md:px-11 "
+          className="flex justify-between sm:gap-x-[40px] gap-x-10 w-full md:px-11 "
           aria-label="Tabs"
           role="tablist"
           aria-orientation="horizontal"

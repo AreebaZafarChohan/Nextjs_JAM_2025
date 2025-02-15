@@ -138,7 +138,7 @@ const ProductCardDetails = () => {
     fetchProducts();
   }, []);
   return (
-    <div className="relative w-full lg:h-[4000px] h-[3579px] mx-auto lg:mx-0 md:mx-auto ">
+    <div className="relative w-full min-h-screen mx-auto lg:mx-0 md:mx-auto">
       {details && (
         <div className="w-full mt-[6rem] h-[1055px] bg-white flex flex-col md:mt-[8rem] md:flex-row md:gap-[1.5rem] md:h-[759px] details">
           <div className="md:w-[55%] md:h-[759px] xs:h-[600px] h-[380px]">
@@ -167,7 +167,7 @@ const ProductCardDetails = () => {
               <p className="font-satoshi font-normal text-darkPrimary leading-[21px] text-[16px] lg:text-lg md:text-base">
                 {details.description}
               </p>
-              <ul className="list-disc mt-1 mb-4">
+              <ul className="list-disc mt-1 mb-4 mx-2">
                 <li className="font-satoshi marker:leading-[21px] text-darkPrimary font-normal lg:text-lg md:text-base">
                   Premium material
                 </li>
@@ -353,13 +353,13 @@ const ProductCardDetails = () => {
           )}
         </div>
 
-        <button className="md:w-[250px] w-full md:relative lg:left-[34rem] lg:-bottom-[2rem] md:-bottom-[18rem] md:left-[16rem] py-[16px] px-[32px] bg-lightGray bg-opacity-[15%] leading-6 text-darkPrimary font-satoshi font-normal hover:bg-darkPrimary hover:text-white transition-all duration-300 ease-in-out mt-[8rem] btn">
+        <button className="md:w-[250px] w-full md:relative lg:left-[34rem] lg:-bottom-[2rem] md:-bottom-[18rem] md:left-[16rem] py-[16px] px-[32px] bg-lightGray bg-opacity-[15%] leading-6 text-darkPrimary font-satoshi font-normal hover:bg-darkPrimary hover:text-white transition-all duration-300 ease-in-out mt-[2rem]">
           View collection
         </button>
       </div>
 
-      <div className="relative w-full lg:top-[4rem] md:top-[22rem] mt-[26rem] lg:mt-0 h-[757px] detail-feature">
-        <div className="relative lg:h-[335px] mt-[8rem] w-full h-[757px] bg-white flex flex-col gap-[2rem] md:gap-0 lg:gap-[2rem] lg:justify-center lg:mx-auto lg:items-center mx-auto sm:mx-6 ">
+      <div className="relative w-full lg:top-[4rem] md:top-[22rem] lg:mt-0 h-[757px] detail-feature">
+        <div className="relative lg:h-[335px] w-full h-[757px] bg-white flex flex-col gap-[2rem] md:gap-0 lg:gap-[2rem] lg:justify-center lg:mx-auto lg:items-center mx-auto sm:mx-6 ">
           <h4 className="font-clash text-2xl font-normal leading-[28px] lg:text-3xl pb-4 lg:p-0 px-8 feature-heading">
             What makes our brand different
           </h4>
