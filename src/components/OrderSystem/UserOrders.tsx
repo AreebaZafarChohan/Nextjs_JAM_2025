@@ -104,7 +104,7 @@ const UserOrders = () => {
             {orderData.map((item: Order, index: number) => (
               <div key={index} className="py-2 border-b-[1px] grid sm:grid-cols-6 grid-cols-4 items-center border-yellow-500">
                 <div className="sm:col-span-3 flex items-center gap-4">
-                  <Link href={{ pathname: `https://www.alwahabclothings.com/product/${item.productId}` }}
+                  <Link href={{ pathname: `https://avionfurnituremarketplace.vercel.app//products/${item.productId}` }}
                   aria-label="View Single Product">
                     <h3 className="text-base font-semibold">{item.productName}</h3>
                   </Link>
