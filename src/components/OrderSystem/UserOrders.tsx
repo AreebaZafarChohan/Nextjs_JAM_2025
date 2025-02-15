@@ -106,7 +106,7 @@ const UserOrders = () => {
                 <div className="sm:col-span-3 flex items-center gap-4">
                   <Link href={{ pathname: `https://avionfurnituremarketplace.vercel.app//products/${item.productId}` }}
                   aria-label="View Single Product">
-                    <h3 className="text-base font-semibold">{item.productName}</h3>
+                    <h3 className="text-base font-semibold underline">{item.productName}</h3>
                   </Link>
                 </div>
                 <p className="text-center">{item.quantity}</p>
